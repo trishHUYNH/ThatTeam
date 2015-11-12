@@ -4,5 +4,6 @@ public class HelloWorld {
 		System.out.println("Helloooooo. -Trish :)");
 		System.out.println("Mika is here too :)");
 		System.out.println("This is Dan");
+		System.out.println("\"James waz here\" - James, 2015");
 	}
 }
