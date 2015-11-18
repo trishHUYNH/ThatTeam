@@ -11,14 +11,14 @@ public class hangman{
 	int numberOfGames = 0;
 	int numberOfGamesWon = 0;
 	double percentageWon = 0.0;
-	System.out.println("Guess the name of That Team's member hanging! (Capitalization matters!)");
+	System.out.println("Guess the name of the person hanging! (Capitalization matters!)");
 	while (wanttoplay){
 		numberOfGames++;
 		
 		boolean success = gamelogistics(wordarray);
 		if (success){
 		numberOfGamesWon++;
-		System.out.println("YOU ARE THE BEST!!!!");
+		System.out.println("ARE THE BEST!!!!");
 		}else {
 		System.out.println("You have failed!");
 		//people[captive] = false;
@@ -56,7 +56,10 @@ public class hangman{
 	System.out.println(guessedletters);
 	System.out.println();
 	gletter = console.nextLine();
-	letter = gletter.charAt(0);
+	if(!gletter.equals("")) {
+	    letter = gletter.charAt(0);
+	}
+
 	if (accidentPrevention(letter,guessedletters)){
 		guessedletters = guessedletters + letter;
 		if(!checkLetter(letter,gameword)){
