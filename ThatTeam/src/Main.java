@@ -16,6 +16,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.*;
 import javafx.application.*;
 import javafx.scene.control.TableColumn.CellEditEvent;
@@ -113,19 +115,6 @@ public class Main extends Application {
 		grid.setVgap(8); // individual cells
 		grid.setHgap(10);
 
-		/********** Display list of articles *********/
-//
-//		// article text field
-//		TextField listOfArticles = new TextField();
-//		listOfArticles.setPrefHeight(400);
-//		listOfArticles.setAlignment(Pos.TOP_LEFT);
-//		listOfArticles.setPromptText("List of articles");
-//		GridPane.setConstraints(listOfArticles, 1, 0);
-//
-//		Button addArt = new Button("Add article");
-//		GridPane.setConstraints(addArt, 1, 1);
-
-
 		/********** DEPARTMENT TABLE VIEW ***********/
 		deptTable = new TableView<Library>();
 		deptTable.setEditable(true);
@@ -133,8 +122,8 @@ public class Main extends Application {
 		TableColumn<Library, String> deptName = new TableColumn<>("Departments");
 		deptName.setMinWidth(200);
 		deptName.setCellValueFactory(new PropertyValueFactory<>("department"));
-		
-		//Implement department table cell editing
+
+		// Implement department table cell editing
 		deptName.setCellFactory(TextFieldTableCell.forTableColumn());
 		deptName.setOnEditCommit(new EventHandler<CellEditEvent<Library, String>>() {
 
@@ -143,6 +132,7 @@ public class Main extends Application {
 				((Library) d.getTableView().getItems()
 						.get(d.getTablePosition().getRow())).setDepartment(d
 								.getNewValue());
+
 			}
 
 		});
@@ -151,7 +141,7 @@ public class Main extends Application {
 		deptTable.setPrefWidth(200);
 		deptTable.getColumns().add(deptName);
 		GridPane.setConstraints(deptTable, 0, 0);
-		
+
 		// department name input;
 		deptInput = new TextField();
 		deptInput.setPromptText("Department");
@@ -181,7 +171,7 @@ public class Main extends Application {
 			if (result)
 				delDeptButtonClicked();
 		});
-		
+
 		delDept.setMaxWidth(Double.MAX_VALUE);
 		GridPane.setConstraints(delDept, 0, 4);
 
@@ -196,16 +186,18 @@ public class Main extends Application {
 		.setCellValueFactory(new PropertyValueFactory<Department, String>(
 				"article"));
 
-		//Implements Article table cell editing
+		// Implements Article table cell editing
 		articleName.setCellFactory(TextFieldTableCell.forTableColumn());
 		articleName
 		.setOnEditCommit(new EventHandler<CellEditEvent<Department, String>>() {
 
 			@Override
 			public void handle(CellEditEvent<Department, String> d) {
+
 				((Department) d.getTableView().getItems()
 						.get(d.getTablePosition().getRow()))
 						.setArticle(d.getNewValue());
+
 			}
 
 		});
@@ -219,7 +211,7 @@ public class Main extends Application {
 		articleInput = new TextField();
 		articleInput.setPromptText("Article");
 		GridPane.setConstraints(articleInput, 1, 2);
-		
+
 		// Add Article Button
 		Button addArticle = new Button("Add article");
 		addArticle.setOnAction(e -> {
@@ -256,9 +248,9 @@ public class Main extends Application {
 		artTextfield.setPrefHeight(400);
 		artTextfield.setAlignment(Pos.TOP_LEFT);
 		artTextfield.setPromptText("Seletected Article");
+//		artTextfield.setText("hello");
 		GridPane.setConstraints(artTextfield, 2, 0);
-		
-		
+
 		// Save article button
 		Button saveArticle = new Button("Copy/Save Article??");
 		saveArticle.setOnAction(e -> {
@@ -269,9 +261,20 @@ public class Main extends Application {
 		saveArticle.setMaxWidth(Double.MAX_VALUE);
 		GridPane.setConstraints(saveArticle, 2, 2);
 
+		
+		/************TEXT FLOW TEST**********/
+		TextFlow tf = new TextFlow(new Text("This is just a text to make sure i can type or have large"
+				+ " text using this fucntion instead of using TextField that i was using before."
+				+ "\n \n of course we will be using a textfile to throw a big article here"
+				+ " so yawp. meanwhile this will do i guess."));
+		tf.setPrefWidth(200);
+		tf.setStyle("-fx-background-color: white");
+		GridPane.setConstraints(tf, 2, 0);
+		
+		
 		grid.getChildren().addAll(deptTable, deptInput, addDept, delDept,
 				articleTable, articleInput, addArticle, delArticle,
-				artTextfield, saveArticle);
+				 saveArticle, tf);
 
 		mainLayout = new BorderPane();
 		mainLayout.setTop(menubar);

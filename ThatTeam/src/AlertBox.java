@@ -13,7 +13,6 @@ public class AlertBox {
 		
 		window.initModality(Modality.APPLICATION_MODAL); //blocks any user interation until this window is closed
 		window.setTitle(title);
-		window.setMinHeight(250);
 		
 		Label label = new Label(message);
 		Button closeButton = new Button("close");
