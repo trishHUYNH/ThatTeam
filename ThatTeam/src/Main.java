@@ -1,5 +1,6 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.*;
@@ -12,10 +13,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.*;
 import javafx.application.*;
+import javafx.scene.control.TableColumn.CellEditEvent;
 
 public class Main extends Application {
 	Stage window;
@@ -34,7 +37,7 @@ public class Main extends Application {
 		// confirm to close window
 		window.setOnCloseRequest(e -> {
 			e.consume(); // user request to close but we going to take care of
-							// it so it doesn't close even if you say no to exit
+			// it so it doesn't close even if you say no to exit
 
 			Boolean answer = ConfirmBox.display("Close Program",
 					"Are you sure you want to close the program?");
@@ -111,31 +114,44 @@ public class Main extends Application {
 		grid.setHgap(10);
 
 		/********** Display list of articles *********/
+//
+//		// article text field
+//		TextField listOfArticles = new TextField();
+//		listOfArticles.setPrefHeight(400);
+//		listOfArticles.setAlignment(Pos.TOP_LEFT);
+//		listOfArticles.setPromptText("List of articles");
+//		GridPane.setConstraints(listOfArticles, 1, 0);
+//
+//		Button addArt = new Button("Add article");
+//		GridPane.setConstraints(addArt, 1, 1);
 
-		// article text field
-		TextField listOfArticles = new TextField();
-		listOfArticles.setPrefHeight(400);
-		listOfArticles.setAlignment(Pos.TOP_LEFT);
-		listOfArticles.setPromptText("List of articles");
-		GridPane.setConstraints(listOfArticles, 1, 0);
-
-		Button addArt = new Button("Add article");
-		GridPane.setConstraints(addArt, 1, 1);
-
-		/************* Display Selected Article *********/
-
-		// article text field
-		TextField artTextfield = new TextField();
-		artTextfield.setPrefHeight(400);
-		artTextfield.setAlignment(Pos.TOP_LEFT);
-		artTextfield.setPromptText("Seletected Article");
-		GridPane.setConstraints(artTextfield, 2, 0);
 
 		/********** DEPARTMENT TABLE VIEW ***********/
+		deptTable = new TableView<Library>();
+		deptTable.setEditable(true);
+
 		TableColumn<Library, String> deptName = new TableColumn<>("Departments");
 		deptName.setMinWidth(200);
 		deptName.setCellValueFactory(new PropertyValueFactory<>("department"));
+		
+		//Implement department table cell editing
+		deptName.setCellFactory(TextFieldTableCell.forTableColumn());
+		deptName.setOnEditCommit(new EventHandler<CellEditEvent<Library, String>>() {
 
+			@Override
+			public void handle(CellEditEvent<Library, String> d) {
+				((Library) d.getTableView().getItems()
+						.get(d.getTablePosition().getRow())).setDepartment(d
+								.getNewValue());
+			}
+
+		});
+
+		deptTable.setItems(getLibrary());
+		deptTable.setPrefWidth(200);
+		deptTable.getColumns().add(deptName);
+		GridPane.setConstraints(deptTable, 0, 0);
+		
 		// department name input;
 		deptInput = new TextField();
 		deptInput.setPromptText("Department");
@@ -165,27 +181,45 @@ public class Main extends Application {
 			if (result)
 				delDeptButtonClicked();
 		});
+		
 		delDept.setMaxWidth(Double.MAX_VALUE);
 		GridPane.setConstraints(delDept, 0, 4);
 
-		deptTable = new TableView<Library>();
-		deptTable.setItems(getLibrary());
-		deptTable.setPrefWidth(200);
-		deptTable.getColumns().add(deptName);
-		GridPane.setConstraints(deptTable, 0, 0);
-
 		/********** ARTICLE TABLE VIEW ***********/
+		articleTable = new TableView<Department>();
+		articleTable.setEditable(true);
+
 		TableColumn<Department, String> articleName = new TableColumn<>(
 				"Articles");
 		articleName.setMinWidth(200);
-		articleName.setCellValueFactory(new PropertyValueFactory<Department, String>("article"));
+		articleName
+		.setCellValueFactory(new PropertyValueFactory<Department, String>(
+				"article"));
 
-		articleTable = new TableView<Department>();
+		//Implements Article table cell editing
+		articleName.setCellFactory(TextFieldTableCell.forTableColumn());
+		articleName
+		.setOnEditCommit(new EventHandler<CellEditEvent<Department, String>>() {
+
+			@Override
+			public void handle(CellEditEvent<Department, String> d) {
+				((Department) d.getTableView().getItems()
+						.get(d.getTablePosition().getRow()))
+						.setArticle(d.getNewValue());
+			}
+
+		});
+
 		articleTable.setItems(getArticles());
 		articleTable.setPrefWidth(200);
 		articleTable.getColumns().add(articleName);
 		GridPane.setConstraints(articleTable, 1, 0);
 
+		// article name input;
+		articleInput = new TextField();
+		articleInput.setPromptText("Article");
+		GridPane.setConstraints(articleInput, 1, 2);
+		
 		// Add Article Button
 		Button addArticle = new Button("Add article");
 		addArticle.setOnAction(e -> {
@@ -200,7 +234,7 @@ public class Main extends Application {
 					addArtButtonClicked();
 			}
 		});
-				
+
 		addArticle.setMaxWidth(Double.MAX_VALUE);
 		GridPane.setConstraints(addArticle, 1, 3);
 
@@ -215,12 +249,16 @@ public class Main extends Application {
 		delArticle.setMaxWidth(Double.MAX_VALUE);
 		GridPane.setConstraints(delArticle, 1, 4);
 
-		/*********** Display article window *******/
-		// article name input;
-		articleInput = new TextField();
-		articleInput.setPromptText("Article");
-		GridPane.setConstraints(articleInput, 1, 2);
+		/************* Display Selected Article *********/
 
+		// article text field
+		TextField artTextfield = new TextField();
+		artTextfield.setPrefHeight(400);
+		artTextfield.setAlignment(Pos.TOP_LEFT);
+		artTextfield.setPromptText("Seletected Article");
+		GridPane.setConstraints(artTextfield, 2, 0);
+		
+		
 		// Save article button
 		Button saveArticle = new Button("Copy/Save Article??");
 		saveArticle.setOnAction(e -> {
@@ -271,7 +309,7 @@ public class Main extends Application {
 		deptSelected = deptTable.getSelectionModel().getSelectedItems();
 
 		deptSelected.forEach(allDepts::remove); // remove selected from all
-												// depts
+		// depts
 	}
 
 	// add department button
