@@ -2,7 +2,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
@@ -11,6 +10,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -246,12 +246,13 @@ public class Main extends Application {
 		/************* Display Selected Article *********/
 
 		// article text field
-		TextField artTextfield = new TextField();
+		TextArea artTextfield = new TextArea();
 		artTextfield.setPrefHeight(400);
-		artTextfield.setAlignment(Pos.TOP_LEFT);
+		artTextfield.setPrefWidth(200);
+		//artTextfield.setAlignment(Pos.TOP_LEFT);
 		artTextfield.setPromptText("Seletected Article");
 		artTextfield.setText("hello");
-		artTextfield.setEditable(false);
+		artTextfield.setEditable(true);
 		GridPane.setConstraints(artTextfield, 2, 0);
 		
 		
