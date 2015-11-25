@@ -1,22 +1,33 @@
+import java.util.ArrayList;
 
 public class Department {
+    
+        private String title;
 
-		private String article;
+		private ArrayList<Article> articles;
 		
-		public Department() {
-			article = "";
+		public Department(String theTitle) {
+			this.title = theTitle;
 		}
 		
-		public Department(String article) {
-			this.article = article;
+		public void setTitle(String newTitle) {
+		    this.title = newTitle;
+		}
+		
+		public String getTitle() {
+		    return title;
 		}
 
-
-		public String getArticle() {
-			return article;
+		public Article getArticle(int index) {
+			return articles.get(index);
 		}
-		public void setArticle(String article) {
-			this.article = article;
+		
+		public void editArticleTitle(String newTitle) {
+			
+		}
+		
+		public String toString() {
+		    return title;
 		}
 		
 		

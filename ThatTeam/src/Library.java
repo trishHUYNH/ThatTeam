@@ -1,24 +1,33 @@
+import java.io.File;
+import java.util.ArrayList;
 
 public class Library {
 	
-	private String department;
+	private ArrayList<Department> departments;
+	
+	//private Department activeDepartment;
 
 	
+	//Blank Library
 	public Library() {
-		this.department = "";	
+	    
 	}
 	
-	public Library(String department) {
-		this.department = department;
-
+	//Library from file
+	public Library(File theFile) {
+	    
 	}
 
-	public String getDepartment() {
-		return department;
+	public Department getDepartment(int index) {
+		return departments.get(index);
 	}
 
-	public void setDepartment(String department) {
-		this.department = department;
+	public void addDepartment(Department department) {
+		departments.add(department);
+	}
+	
+	public void editDepartment(int index, String newTitle) {
+	    departments.get(index).setTitle(newTitle);
 	}
 
 

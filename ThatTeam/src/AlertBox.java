@@ -11,7 +11,7 @@ public class AlertBox {
 	public static void display(String title, String message){
 		Stage window = new Stage();
 		
-		window.initModality(Modality.APPLICATION_MODAL); //blocks any user interation until this window is closed
+		window.initModality(Modality.APPLICATION_MODAL); //blocks any user interaction until this window is closed
 		window.setTitle(title);
 		
 		Label label = new Label(message);

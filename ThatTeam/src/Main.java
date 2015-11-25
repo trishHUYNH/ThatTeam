@@ -24,8 +24,9 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 
 public class Main extends Application {
 	Stage window;
-	TableView<Library> deptTable;
-	TableView<Department> articleTable;
+	Library library;
+	TableView<Department> deptTable;
+	TableView<Article> articleTable;
 	BorderPane mainLayout;
 	TextField deptInput, articleInput;
 
@@ -116,30 +117,31 @@ public class Main extends Application {
 		grid.setHgap(10);
 
 		/********** DEPARTMENT TABLE VIEW ***********/
-		deptTable = new TableView<Library>();
+		deptTable = new TableView<Department>();
 		deptTable.setEditable(true);
 
-		TableColumn<Library, String> deptName = new TableColumn<>("Departments");
+		TableColumn<Department, String> deptName = new TableColumn<>("Departments");
 		deptName.setMinWidth(200);
-		deptName.setCellValueFactory(new PropertyValueFactory<>("department"));
+		deptName.setCellValueFactory(new PropertyValueFactory<>("title"));
 
 		// Implement department table cell editing
 		deptName.setCellFactory(TextFieldTableCell.forTableColumn());
-		deptName.setOnEditCommit(new EventHandler<CellEditEvent<Library, String>>() {
+		deptName.setOnEditCommit(new EventHandler<CellEditEvent<Department, String>>() {
 
 			@Override
-			public void handle(CellEditEvent<Library, String> d) {
-				((Library) d.getTableView().getItems()
-						.get(d.getTablePosition().getRow())).setDepartment(d
+			public void handle(CellEditEvent<Department, String> d) {
+				((Department) d.getTableView().getItems()
+						.get(d.getTablePosition().getRow())).setTitle(d
 								.getNewValue());
 
 			}
 
 		});
 
-		deptTable.setItems(getLibrary());
+		deptTable.setItems(getDepartments());
 		deptTable.setPrefWidth(200);
 		deptTable.getColumns().add(deptName);
+		deptTable.getSelectionModel().getSelectedItem();
 		GridPane.setConstraints(deptTable, 0, 0);
 
 		// department name input;
@@ -176,27 +178,27 @@ public class Main extends Application {
 		GridPane.setConstraints(delDept, 0, 4);
 
 		/********** ARTICLE TABLE VIEW ***********/
-		articleTable = new TableView<Department>();
+		articleTable = new TableView<Article>();
 		articleTable.setEditable(true);
 
-		TableColumn<Department, String> articleName = new TableColumn<>(
+		TableColumn<Article, String> articleName = new TableColumn<>(
 				"Articles");
 		articleName.setMinWidth(200);
 		articleName
-		.setCellValueFactory(new PropertyValueFactory<Department, String>(
-				"article"));
+		.setCellValueFactory(new PropertyValueFactory<Article, String>(
+				"title"));
 
 		// Implements Article table cell editing
 		articleName.setCellFactory(TextFieldTableCell.forTableColumn());
 		articleName
-		.setOnEditCommit(new EventHandler<CellEditEvent<Department, String>>() {
+		.setOnEditCommit(new EventHandler<CellEditEvent<Article, String>>() {
 
 			@Override
-			public void handle(CellEditEvent<Department, String> d) {
+			public void handle(CellEditEvent<Article, String> d) {
 
-				((Department) d.getTableView().getItems()
+				((Article) d.getTableView().getItems()
 						.get(d.getTablePosition().getRow()))
-						.setArticle(d.getNewValue());
+						.setTitle(d.getNewValue());
 
 			}
 
@@ -248,8 +250,11 @@ public class Main extends Application {
 		artTextfield.setPrefHeight(400);
 		artTextfield.setAlignment(Pos.TOP_LEFT);
 		artTextfield.setPromptText("Seletected Article");
-//		artTextfield.setText("hello");
+		artTextfield.setText("hello");
+		artTextfield.setEditable(false);
 		GridPane.setConstraints(artTextfield, 2, 0);
+		
+		
 
 		// Save article button
 		Button saveArticle = new Button("Copy/Save Article??");
@@ -274,7 +279,7 @@ public class Main extends Application {
 		
 		grid.getChildren().addAll(deptTable, deptInput, addDept, delDept,
 				articleTable, articleInput, addArticle, delArticle,
-				 saveArticle, tf);
+				 saveArticle, artTextfield);
 
 		mainLayout = new BorderPane();
 		mainLayout.setTop(menubar);
@@ -289,8 +294,8 @@ public class Main extends Application {
 
 	// delete article button
 	private void delArtButtonClicked() {
-		ObservableList<Department> artSelected;
-		ObservableList<Department> allArts;
+		ObservableList<Article> artSelected;
+		ObservableList<Article> allArts;
 		allArts = articleTable.getItems();
 		artSelected = articleTable.getSelectionModel().getSelectedItems();
 
@@ -299,15 +304,14 @@ public class Main extends Application {
 
 	// add article button
 	private void addArtButtonClicked() {
-		Department article = new Department();
-		article.setArticle(articleInput.getText());
+		Article article = new Article(articleInput.getText());
 		articleTable.getItems().add(article);
 		articleInput.clear();
 	}
 
 	// delete department button
 	private void delDeptButtonClicked() {
-		ObservableList<Library> deptSelected, allDepts;
+		ObservableList<Department> deptSelected, allDepts;
 		allDepts = deptTable.getItems();
 		deptSelected = deptTable.getSelectionModel().getSelectedItems();
 
@@ -317,26 +321,25 @@ public class Main extends Application {
 
 	// add department button
 	private void addDeptButtonClicked() {
-		Library library = new Library();
-		library.setDepartment(deptInput.getText());
-		deptTable.getItems().add(library);
+		Department dept = new Department(deptInput.getText());
+		deptTable.getItems().add(dept);
 		deptInput.clear();
 	}
 
 	// get list of articles and adds it to the table
-	private ObservableList<Department> getArticles() {
-		ObservableList<Department> articles = FXCollections
+	private ObservableList<Article> getArticles() {
+		ObservableList<Article> articles = FXCollections
 				.observableArrayList();
-		articles.add(new Department("abc"));
-		articles.add(new Department("efg"));
+		articles.add(new Article("abc"));
+		articles.add(new Article("efg"));
 		return articles;
 	}
 
 	// get list of departments and adds it to the table
-	public ObservableList<Library> getLibrary() {
-		ObservableList<Library> library = FXCollections.observableArrayList();
-		library.add(new Library("Hr"));
-		library.add(new Library("legal"));
-		return library;
+	public ObservableList<Department> getDepartments() {
+		ObservableList<Department> deptList = FXCollections.observableArrayList();
+		deptList.add(new Department("Hr"));
+		deptList.add(new Department("legal"));
+		return deptList;
 	}
 }
