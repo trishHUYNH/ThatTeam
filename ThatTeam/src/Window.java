@@ -123,8 +123,7 @@ public class Window extends Application {
         MenuItem exit = new MenuItem("Exit");
         exit.setOnAction(e -> {
             Boolean answer =
-                            ConfirmBox.display("Close Program",
-                                               "Are you sure you want to close the program?");
+                            ConfirmBox.display("Close Program", "Are you sure you want to close the program?");
             if (answer)
                 window.close();
         });
@@ -209,7 +208,7 @@ public class Window extends Application {
 
         // Department name input
         deptInput = new TextField();
-        deptInput.setPromptText("New department title...");
+        deptInput.setPromptText("New Department Title...");
         GridPane.setConstraints(deptInput, 0, 2);
 
         // Add Department Button
@@ -218,9 +217,11 @@ public class Window extends Application {
 
             // Prompt if name field is empty
             if (deptInput.getText().isEmpty()) {
-                AlertBox.display("Empty Field", "Please enter a department title!");
+                AlertBox.display("Empty Department Field", "Please enter a department title!");
             } else {
-                boolean result = ConfirmBox.display("Add Department", "Are you sure?");
+            	//Prompts user for new name of dept to add
+                boolean result = ConfirmBox.display("Add Department", "Are you sure you would like to add \""
+                									+ "" + deptInput.getText() + "\"?");
                 if (result)
                     deptAddButtonClicked();
             }
@@ -233,16 +234,16 @@ public class Window extends Application {
         // Delete Department button
         Button delDept = new Button("Delete Dept");
         delDept.setOnAction(e -> {
-            // Prompt with department name asking to delete
-            boolean result =
-                        ConfirmBox.display("Delete Department",
-                                           "Are you sure you want to delete \""
-                                                           + deptTable.getSelectionModel()
-                                                                           .getSelectedItem()
-                                                                           .getTitle()
-                                                           + "\"?");
-            if (result)
-                deptDelButtonClicked();
+        	//Alert box if no dept is chosen to delete
+        	if(deptTable.getSelectionModel().isEmpty()) {
+        		AlertBox.display("No Department Chosen", "Please choose a department you would like to delete");
+        	} else {
+        		// Prompt with department name asking to delete
+        		boolean result = ConfirmBox.display("Delete Department","Are you sure you want to delete \""
+                                 					+ deptTable.getSelectionModel().getSelectedItem().getTitle()+ "\"?");
+        		if (result)
+        			deptDelButtonClicked();
+        	}
         });
 
         delDept.setMaxWidth(Double.MAX_VALUE);
@@ -287,7 +288,7 @@ public class Window extends Application {
          */
 
         articleInput = new TextField();
-        articleInput.setPromptText("Article");
+        articleInput.setPromptText("New Article Title...");
         GridPane.setConstraints(articleInput, 1, 2);
 
         // Add Article Button
@@ -295,9 +296,11 @@ public class Window extends Application {
         addArticle.setOnAction(e -> {
 
             if (articleInput.getText().isEmpty()) {
-                AlertBox.display("Empty Field", "Please enter the name of the article");
+                AlertBox.display("Empty Article Field", "Please enter the name of the article");
             } else {
-                boolean result = ConfirmBox.display("Add Article", "Are you sure?");
+            	//Prompts user with new article name to add
+                boolean result = ConfirmBox.display("Add Article", "Are you sure you would like to add \""
+                									+ "" + articleInput.getText() + "\"?");
                 if (result)
                     artAddButtonClicked();
             }
@@ -310,16 +313,17 @@ public class Window extends Application {
         // Delete Article button
         Button delArticle = new Button("Delete article");
         delArticle.setOnAction(e -> {
-            // Prompt with department name asking to delete
-            boolean result =
-                            ConfirmBox.display("Delete Article",
-                                           "Are you sure you want to delete \""
-                                                           + articleTable.getSelectionModel()
-                                                                           .getSelectedItem()
-                                                                           .getTitle()
-                                                           + "\"?");
-            if (result)
-                artDelButtonClicked();
+        	//Alert box if no dept is chosen to delete
+        	if(articleTable.getSelectionModel().isEmpty()) {
+        		AlertBox.display("No Article Chosen", "Please choose an article you would like to delete");
+        	} else {
+                // Prompt with department name asking to delete
+        		boolean result = ConfirmBox.display("Delete Article","Are you sure you want to delete \""
+                             	+ articleTable.getSelectionModel().getSelectedItem().getTitle() + "\"?");
+        	
+        		if (result)
+        			artDelButtonClicked();
+        	}
         });
 
         delArticle.setMaxWidth(Double.MAX_VALUE);
