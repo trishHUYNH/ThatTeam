@@ -23,6 +23,8 @@ import javafx.application.*;
 import javafx.scene.control.TableColumn.CellEditEvent;
 
 public class Main extends Application {
+    
+    
 	Stage window;
 	Library library;
 	TableView<Department> deptTable;
@@ -30,17 +32,24 @@ public class Main extends Application {
 	BorderPane mainLayout;
 	TextField deptInput, articleInput;
 
+	/**
+	 * Main method for starting the GUI
+	 * 
+	 * @param args Command line arguments
+	 */
 	public static void main(String[] args) {
-		launch(args);
+		launch(args);     //Launches the GUI
 	}
 
+	/**
+	 * 
+	 */
 	public void start(Stage primaryStage) throws Exception {
 		window = primaryStage;
 
-		// confirm to close window
+		// Close window request
 		window.setOnCloseRequest(e -> {
-			e.consume(); // user request to close but we going to take care of
-			// it so it doesn't close even if you say no to exit
+			e.consume();
 
 			Boolean answer = ConfirmBox.display("Close Program",
 					"Are you sure you want to close the program?");
@@ -246,14 +255,15 @@ public class Main extends Application {
 		/************* Display Selected Article *********/
 
 		// article text field
-		TextArea artTextfield = new TextArea();
-		artTextfield.setPrefHeight(400);
-		artTextfield.setPrefWidth(200);
-		//artTextfield.setAlignment(Pos.TOP_LEFT);
-		artTextfield.setPromptText("Seletected Article");
-		artTextfield.setText("hello");
-		artTextfield.setEditable(true);
-		GridPane.setConstraints(artTextfield, 2, 0);
+		TextArea artTextarea = new TextArea();
+		artTextarea.setPrefHeight(400);
+		artTextarea.setPrefWidth(200);
+		//artTextarea.setAlignment(Pos.TOP_LEFT);
+		artTextarea.setPromptText("Seletected Article");
+		artTextarea.setText("hello");
+		artTextarea.setWrapText(true);
+		artTextarea.setEditable(true);
+		GridPane.setConstraints(artTextarea, 2, 0);
 		
 		
 
@@ -280,7 +290,7 @@ public class Main extends Application {
 		
 		grid.getChildren().addAll(deptTable, deptInput, addDept, delDept,
 				articleTable, articleInput, addArticle, delArticle,
-				 saveArticle, artTextfield);
+				 saveArticle, artTextarea);
 
 		mainLayout = new BorderPane();
 		mainLayout.setTop(menubar);
