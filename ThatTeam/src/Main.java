@@ -1,7 +1,7 @@
 /**
  * @author James Brewer
  * @version A
- *
+ * 
  */
 public class Main {
 
