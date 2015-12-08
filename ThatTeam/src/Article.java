@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 // TODO: Auto-generated Javadoc
+// TODO: 
 /**
  * The Class Article.
  */
@@ -53,7 +54,7 @@ public class Article {
     }
 
     /**
-     * Gets title.
+     * Gets title of an Article.
      *
      * @return title
      */
@@ -88,6 +89,14 @@ public class Article {
      */
     public boolean searchText(String theKeyword) {
         return keywords.contains(theKeyword);
+    }
+
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    public String toString(){
+    	return getTitle();
     }
 
 }
