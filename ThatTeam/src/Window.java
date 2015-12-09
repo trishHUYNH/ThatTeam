@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -27,6 +24,7 @@ import javafx.application.*;
 import javafx.scene.control.TableColumn.CellEditEvent;
 
 // TODO: Add author names when complete
+// TODO: Remove all print statements that were used for testing
 /**
  * Window class. Creates GUI for the program.
  * 
@@ -471,9 +469,6 @@ public class Window extends Application {
 		
 		System.out.println("Article to delete: " + artSelected.toString());
 		Department currDept = deptTable.getSelectionModel().getSelectedItem();
-
-		Department temp = null;
-		List<Department> tempDept = library.getDepartment();
 		
 		currDept.removeArticle(artSelected);
 	}

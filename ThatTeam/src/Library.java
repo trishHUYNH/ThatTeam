@@ -2,8 +2,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javafx.collections.ObservableList;
-
 // TODO: Auto-generated Javadoc
 /**
  * The Class Library.
