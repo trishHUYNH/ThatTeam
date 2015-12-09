@@ -1,5 +1,6 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.*;
@@ -14,6 +15,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.*;
@@ -29,7 +31,8 @@ import javafx.scene.control.TableColumn.CellEditEvent;
  * @version A
  *
  */
-public class Window extends Application {
+
+public class Window extends Application{
 
     /**
      * JavaFX stage for the main window.
@@ -60,6 +63,9 @@ public class Window extends Application {
      * Text fields for department and article additions.
      */
     TextField deptInput, articleInput;
+    
+    //DanDan
+    TextArea artTextarea;
 
     public void runWindow() {
         launch();
@@ -263,6 +269,19 @@ public class Window extends Application {
 
         // Implements Article table cell editing
         articleName.setCellFactory(TextFieldTableCell.forTableColumn());
+        
+        //DanDan
+        //If one of the articles is clicked, show the article text
+        articleTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+            	//articleTable = new TableView<Article>();
+                TableView<Article> articleTable = (TableView<Article>) event.getSource();
+                Article highlightedArticle = articleTable.getSelectionModel().getSelectedItem();
+                artTextarea.setText(highlightedArticle.getText());
+                //System.out.println("I got it"); 
+            }
+        });
 
         // Event handler for editing similar to
         articleName.setOnEditCommit(new EventHandler<CellEditEvent<Article, String>>() {
@@ -337,7 +356,10 @@ public class Window extends Application {
         //TODO: Change text area in the event of deleting an article being displayed
         //TODO: Enable text editing with an "Edit Article" button, and disable editing when needed
         //TODO: Set min/max height
-        TextArea artTextarea = new TextArea();
+        
+        //DanDan replaced this with following line
+        //TextArea artTextarea = new TextArea();
+        artTextarea = new TextArea();
         artTextarea.setPrefHeight(700);
         artTextarea.setMinWidth(300);
         artTextarea.setText("Please select an article from a department.");
@@ -447,6 +469,7 @@ public class Window extends Application {
         ObservableList<Article> articles = FXCollections.observableArrayList();
         articles.add(new Article("abc"));
         articles.add(new Article("efg"));
+        articles.add(new Article("merp"));
         return articles;
     }
 
@@ -462,6 +485,7 @@ public class Window extends Application {
         deptList.add(new Department("legal"));
         return deptList;
     }
+    
     
     //TODO: Add handler for Save and Edit buttons
 }
