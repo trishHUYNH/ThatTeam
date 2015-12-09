@@ -19,6 +19,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.*;
@@ -64,6 +65,9 @@ public class Window extends Application {
 	 * Text fields for department and article additions.
 	 */
 	TextField deptInput, articleInput;
+	
+	//DanDan
+    TextArea artTextarea;
 
 	public Window() {
 		super();
@@ -302,6 +306,19 @@ public class Window extends Application {
 		// Implements Article table cell editing
 		articleName.setCellFactory(TextFieldTableCell.forTableColumn());
 
+		//DanDan
+        //If one of the articles is clicked, show the article text
+        articleTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+            	//articleTable = new TableView<Article>();
+                TableView<Article> articleTable = (TableView<Article>) event.getSource();
+                Article highlightedArticle = articleTable.getSelectionModel().getSelectedItem();
+                artTextarea.setText(highlightedArticle.getText());
+                //System.out.println("I got it"); 
+            }
+        });
+        
 		// Event handler for editing similar to
 		articleName
 				.setOnEditCommit(new EventHandler<CellEditEvent<Article, String>>() {
@@ -391,12 +408,13 @@ public class Window extends Application {
 		// TODO: Enable text editing with an "Edit Article" button, and disable
 		// editing when needed
 		// TODO: Set min/max height
-		TextArea artTextarea = new TextArea();
+		//TextArea artTextarea = new TextArea();
+		artTextarea = new TextArea();
 		artTextarea.setPrefHeight(700);
 		artTextarea.setMinWidth(300);
 		artTextarea.setText("Please select an article from a department.");
 		artTextarea.setWrapText(true);
-		artTextarea.setEditable(false);
+		artTextarea.setEditable(true);
 		GridPane.setConstraints(artTextarea, 2, 0);
 
 		// Save article button
