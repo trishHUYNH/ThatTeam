@@ -255,12 +255,8 @@ public class Window extends Application {
 				AlertBox.display("Empty Department Field",
 						"Please enter a department title!");
 			} else {
-				// Prompts user for new name of dept to add
-				boolean result = ConfirmBox.display("Add Department",
-						"Are you sure you would like to add \"" + ""
-								+ deptInput.getText() + "\"?");
-				if (result)
-					deptAddButtonClicked();
+				
+				deptAddButtonClicked();
 			}
 		});
 
@@ -361,11 +357,6 @@ public class Window extends Application {
 						AlertBox.display("no deparment selcted",
 								"Select a department to add article or add new Department");
 					} else {
-						// Prompts user with new article name to add
-						boolean result = ConfirmBox.display("Add Article",
-								"Are you sure you would like to add \"" + ""
-										+ articleInput.getText() + "\"?");
-						if (result)
 							artAddButtonClicked();
 					}
 				});
@@ -477,14 +468,14 @@ public class Window extends Application {
 		Article artSelected = articleTable.getSelectionModel()
 				.getSelectedItem();
 		articleTable.getItems().remove(artSelected);
+		
 		System.out.println("Article to delete: " + artSelected.toString());
+		Department currDept = deptTable.getSelectionModel().getSelectedItem();
+
 		Department temp = null;
 		List<Department> tempDept = library.getDepartment();
-		for (int i = 0; i < tempDept.size(); i++) {
-			temp = tempDept.get(i);
-		}
-		temp.removeArticle(artSelected);
-
+		
+		currDept.removeArticle(artSelected);
 	}
 
 	/**
