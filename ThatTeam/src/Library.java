@@ -13,7 +13,7 @@ public class Library {
 	/**
 	 * departments.
 	 */
-	private ArrayList<Department> departments;
+	public ArrayList<Department> departments;
 
 	/**
 	 * Constructs a blank Library object.

@@ -20,7 +20,7 @@ public class Department {
 	/**
 	 * articles.
 	 */
-	private ArrayList<Article> articles;
+	public ArrayList<Article> articles;
 
 	/**
 	 * Constructs a new Department object.

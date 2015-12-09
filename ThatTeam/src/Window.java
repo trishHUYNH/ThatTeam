@@ -67,7 +67,7 @@ public class Window extends Application {
 	TextField deptInput, articleInput;
 	
 	//DanDan
-    TextArea artTextarea;
+    TextArea articleTextArea;
 
 	public Window() {
 		super();
@@ -314,7 +314,7 @@ public class Window extends Application {
             	//articleTable = new TableView<Article>();
                 TableView<Article> articleTable = (TableView<Article>) event.getSource();
                 Article highlightedArticle = articleTable.getSelectionModel().getSelectedItem();
-                artTextarea.setText(highlightedArticle.getText());
+                articleTextArea.setText(highlightedArticle.getText());
                 //System.out.println("I got it"); 
             }
         });
@@ -409,23 +409,29 @@ public class Window extends Application {
 		// editing when needed
 		// TODO: Set min/max height
 		//TextArea artTextarea = new TextArea();
-		artTextarea = new TextArea();
-		artTextarea.setPrefHeight(700);
-		artTextarea.setMinWidth(300);
-		artTextarea.setText("Please select an article from a department.");
-		artTextarea.setWrapText(true);
-		artTextarea.setEditable(true);
-		GridPane.setConstraints(artTextarea, 2, 0);
+		articleTextArea = new TextArea();
+		articleTextArea.setPrefHeight(700);
+		articleTextArea.setMinWidth(300);
+		articleTextArea.setText("Please select an article from a department.");
+		articleTextArea.setWrapText(true);
+		articleTextArea.setEditable(true);
+		GridPane.setConstraints(articleTextArea, 2, 0);
 
 		// Save article button
 		// TODO: Implement save function
 		Button saveArticle = new Button("Save Article");
-		saveArticle.setOnAction(e -> {
-			// TODO: Use the ConfirmBox somehow
-				AlertBox.display("Save Article",
-						"Do you wish to save this article?");
+        saveArticle.setOnAction(e -> {
+        	if(articleTable.getSelectionModel().isEmpty()) {
+        		AlertBox.display("No Article Chosen", "Please choose an article you would like to edit and save");
+        	} 
+        	else {
+        		boolean result = ConfirmBox.display("Save Article", "Are you sure you want to save article \""
+                 	  			+ articleTable.getSelectionModel().getSelectedItem().getTitle() + "\"?");
+    		if (result) 
+    			saveButtonClicked(deptTable.getSelectionModel().getSelectedItem(), articleTable.getSelectionModel().getSelectedItem(), articleTextArea.getText());
+    		}
 
-			});
+        });
 
 		saveArticle.setMaxWidth(Double.MAX_VALUE);
 		GridPane.setConstraints(saveArticle, 2, 2);
@@ -437,7 +443,7 @@ public class Window extends Application {
 		// Add all of the elements to the grid
 		grid.getChildren().addAll(deptTable, deptInput, addDept, delDept,
 				articleTable, articleInput, addArticle, delArticle,
-				saveArticle, artTextarea);
+				saveArticle, articleTextArea);
 
 		// Create the layout and add the menu and grid
 		mainLayout = new BorderPane();
@@ -562,6 +568,27 @@ public class Window extends Application {
 		return deptList;
 	}
 
-	// TODO: Add handler for Save and Edit buttons
+    private void saveButtonClicked(Department thisDepartment, Article thisArticle, String text) {
+    	int departmentIndex;
+    	int articleIndex;
+    	//Copies previous article title and adds new text
+    	Article newArticle = new Article(thisArticle.getTitle(), text);
+    	
+    	if (library.departments.contains(thisDepartment)) {
+    		departmentIndex = library.departments.indexOf(thisDepartment);
+    		articleIndex = library.departments.get(departmentIndex).articles.indexOf(thisArticle);
+    		library.departments.get(departmentIndex).articles.set(articleIndex, newArticle);
+    	}
+    	
+    	/*
+    	 * Console testing
+    	 */
+        System.out.println("\n----->SAVING ARTICLE<-----");
+    	for(int i = 0; i < thisDepartment.articles.size(); i++) {
+    	    System.out.print(thisDepartment.articles.get(i).getTitle() + " : ");
+    	    System.out.println(thisDepartment.articles.get(i).getText());
+    	}
+    }
+
 
 }
