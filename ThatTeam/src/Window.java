@@ -1,4 +1,5 @@
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -17,7 +18,10 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.*;
+
 import javafx.application.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableColumn.CellEditEvent;
 
 // TODO: Auto-generated Javadoc
@@ -39,7 +43,7 @@ public class Window extends Application {
     /**
      * Library class to hold departments.
      */
-    Library library;
+    private static Library library;
 
     /**
      * JavaFX table to hold departments.
@@ -50,7 +54,10 @@ public class Window extends Application {
      * JavaFX table to hold articles.
      */
     TableView<Article> articleTable;
-
+    /*
+     * Object to hold article text. Editable.
+     */
+    TextArea articleTextArea;
     /**
      * Window layout.
      */
@@ -60,8 +67,11 @@ public class Window extends Application {
      * Text fields for department and article additions.
      */
     TextField deptInput, articleInput;
+    
 
-    public void runWindow() {
+    
+    public void runWindow(Library thisLibrary) {
+    	library = new Library(thisLibrary);
         launch();
     }
 
@@ -71,7 +81,6 @@ public class Window extends Application {
      * @see javafx.application.Application#start(javafx.stage.Stage)
      */
     public void start(Stage primaryStage) throws Exception {
-
         // Assign primary stage to window
         window = primaryStage;
 
@@ -79,9 +88,7 @@ public class Window extends Application {
         window.setOnCloseRequest(e -> {
             e.consume();
 
-            boolean answer =
-                            ConfirmBox.display("Close Program",
-                                               "Are you sure you want to close the program?");
+            boolean answer = ConfirmBox.display("Close Program", "Are you sure you want to close the program?");
             if (answer)
                 window.close();
         });
@@ -96,24 +103,7 @@ public class Window extends Application {
 
         /******* New Menu **********/
         Menu fileMenu = new Menu("File");
-        // Menu newMenu = new Menu("New");
-        // Menu editMenu = new Menu("Edit");
-
-        /******* File menu items **********/
-        // MenuItem newFile = new MenuItem("New...");
-        // newFile.setOnAction(e -> System.out.println("Create a new File"));
-        // fileMenu.getItems().add(newFile);
-        //
-        // MenuItem openFile = new MenuItem("Open...");
-        // openFile.setOnAction(e -> System.out.println("Open a new File"));
-        // fileMenu.getItems().add(openFile);
-        //
-        // MenuItem saveFile = new MenuItem("Save...");
-        // saveFile.setOnAction(e -> System.out.println("Save new File"));
-        // fileMenu.getItems().add(saveFile);
-        //
-        // fileMenu.getItems().add(new SeparatorMenuItem());
-        //
+ 
         MenuItem settings = new MenuItem("Settings");
         settings.setOnAction(e -> System.out.println("Open some setting functions"));
         fileMenu.getItems().add(settings);
@@ -122,34 +112,12 @@ public class Window extends Application {
 
         MenuItem exit = new MenuItem("Exit");
         exit.setOnAction(e -> {
-            Boolean answer =
-                            ConfirmBox.display("Close Program", "Are you sure you want to close the program?");
+            Boolean answer = ConfirmBox.display("Close Program", "Are you sure you want to close the program?");
             if (answer)
                 window.close();
         });
         fileMenu.getItems().add(exit);
 
-        /******* NewMenu item **********/
-        // MenuItem newDept = new MenuItem("New Department");
-        // newDept.setOnAction(e -> System.out.println("Creates new Dept"));
-        // newMenu.getItems().add(newDept);
-        //
-        // MenuItem newArt = new MenuItem("New Article");
-        // newArt.setOnAction(e -> System.out.println("Creates new Article"));
-        // newMenu.getItems().add(newArt);
-
-        /******* Edit menus **********/
-        // MenuItem dept = new MenuItem("dept");
-        // dept.setOnAction(e -> System.out.println("edit department"));
-        // editMenu.getItems().add(dept);
-        //
-        // MenuItem article = new MenuItem("article");
-        // article.setOnAction(e -> System.out.println("edit article"));
-        // editMenu.getItems().add(article);
-        //
-        // MenuItem text = new MenuItem("text");
-        // text.setOnAction(e -> System.out.println("edit text"));
-        // editMenu.getItems().add(text);
 
         /******* Main MenuBar **********/
         MenuBar menubar = new MenuBar();
@@ -171,8 +139,26 @@ public class Window extends Application {
 
         deptTable = new TableView<Department>();
         deptTable.setEditable(true);
+        deptTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Department>() {
+        	//Retrieves articles from chosen department
+			@Override
+			public void changed(ObservableValue observable, Department oldValue, Department newValue) {
+				
+				//Switching departments with another department's article open
+				if(!articleTable.getSelectionModel().isEmpty()) {
+					articleTable.getSelectionModel().clearSelection();
+					articleTable.setItems(getArticles(newValue));
+					articleTextArea.setText("Please select an article from department \"" + newValue.getTitle() + "\"");
+				} 
+				else {
+					articleTable.setItems(getArticles(newValue));
+					articleTextArea.setText("Please select an article from department \"" + newValue.getTitle() + "\"");
+				}
+				System.out.println("Department: " + newValue.getTitle() + " chosen");
+			}
+		});
 
-        TableColumn<Department, String> deptName = new TableColumn<>("Departments");
+        TableColumn<Department, String> deptName = new TableColumn<>("Department");
 
         // Sets the departments to be displayed in the table by their field "title"
         deptName.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -188,7 +174,6 @@ public class Window extends Application {
             public void handle(CellEditEvent<Department, String> d) {
                 ((Department) d.getTableView().getItems().get(d.getTablePosition().getRow()))
                                 .setTitle(d.getNewValue());
-
             }
 
         });
@@ -275,12 +260,27 @@ public class Window extends Application {
             }
 
         });
-
-        articleTable.setItems(getArticles());
-        // articleTable.setPrefWidth(200);
+        
+        //articleTable.setItems(getArticles());
+        //articleTable.setPrefWidth(200);
         articleTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         articleTable.setMinWidth(200);
         articleTable.getColumns().add(articleName);
+        articleTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Article>() {
+        	//Retrieves articles from chosen department
+
+			@Override
+			public void changed(ObservableValue observable, Article oldValue, Article newValue) {
+				//Breaks out of listener when selection is cleared
+				if(newValue == null) {
+					return;
+				}
+				else {
+					articleTextArea.setText(newValue.getText());
+					System.out.println("Article: " + newValue.getTitle() + " chosen");
+				}
+			}
+		});
         GridPane.setConstraints(articleTable, 1, 0);
 
         /**
@@ -299,10 +299,9 @@ public class Window extends Application {
                 AlertBox.display("Empty Article Field", "Please enter the name of the article");
             } else {
             	//Prompts user with new article name to add
-                boolean result = ConfirmBox.display("Add Article", "Are you sure you would like to add \""
-                									+ "" + articleInput.getText() + "\"?");
+                boolean result = ConfirmBox.display("Add Article", "Are you sure you would like to add \"" + "" + articleInput.getText() + "\"?");
                 if (result)
-                    artAddButtonClicked();
+                    artAddButtonClicked(deptTable.getSelectionModel().getSelectedItem());
             }
         });
 
@@ -322,7 +321,7 @@ public class Window extends Application {
                              	+ articleTable.getSelectionModel().getSelectedItem().getTitle() + "\"?");
         	
         		if (result)
-        			artDelButtonClicked();
+        			artDelButtonClicked(deptTable.getSelectionModel().getSelectedItem());
         	}
         });
 
@@ -337,21 +336,36 @@ public class Window extends Application {
         //TODO: Change text area in the event of deleting an article being displayed
         //TODO: Enable text editing with an "Edit Article" button, and disable editing when needed
         //TODO: Set min/max height
-        TextArea artTextarea = new TextArea();
-        artTextarea.setPrefHeight(700);
-        artTextarea.setMinWidth(300);
-        artTextarea.setText("Please select an article from a department.");
-        artTextarea.setWrapText(true);
-        artTextarea.setEditable(false);
-        GridPane.setConstraints(artTextarea, 2, 0);
+        articleTextArea = new TextArea();
+
+        articleTextArea.setPrefHeight(700);
+        articleTextArea.setMinWidth(300);
+        articleTextArea.setWrapText(true);
+        articleTextArea.setEditable(true);
+        articleTextArea.setText("Please select an article from a department.");
+        articleTextArea.textProperty().addListener(new ChangeListener<String>() {
+        	@Override
+        	public void changed(ObservableValue observable, String oldValue, String newValue) {
+        		//Listener for TextArea
+        	}
+        });
+       
+
+        GridPane.setConstraints(articleTextArea, 2, 0);
 
         // Save article button
         //TODO: Implement save function
         Button saveArticle = new Button("Save Article");
         saveArticle.setOnAction(e -> {
-            //TODO: Use the ConfirmBox somehow
-            AlertBox.display("Save Article",
-                             "Do you wish to save this article?");
+        	if(articleTable.getSelectionModel().isEmpty()) {
+        		AlertBox.display("No Article Chosen", "Please choose an article you would like to edit and save");
+        	} 
+        	else {
+        		boolean result = ConfirmBox.display("Save Article", "Are you sure you want to save article \""
+                 	  			+ articleTable.getSelectionModel().getSelectedItem().getTitle() + "\"?");
+    		if (result) 
+    			saveButtonClicked(deptTable.getSelectionModel().getSelectedItem(), articleTable.getSelectionModel().getSelectedItem(), articleTextArea.getText());
+    		}
 
         });
         
@@ -365,7 +379,7 @@ public class Window extends Application {
         //Add all of the elements to the grid
         grid.getChildren().addAll(deptTable, deptInput, addDept, delDept, articleTable,
                                   articleInput, addArticle, delArticle, saveArticle,
-                                  artTextarea);
+                                  articleTextArea);
 
         //Create the layout and add the menu and grid
         mainLayout = new BorderPane();
@@ -395,7 +409,7 @@ public class Window extends Application {
      */
     //TODO: Decide whether to compress table stuff into one line
     //TODO: Delete article(s) from the department
-    private void artDelButtonClicked() {
+    private void artDelButtonClicked(Department thisDepartment) {
         ObservableList<Article> artSelected;
         ObservableList<Article> allArts;
         allArts = articleTable.getItems(); //Get all the articles
@@ -403,15 +417,33 @@ public class Window extends Application {
 
         //Take the selected items and remove them from the whole list
         artSelected.forEach(allArts::remove);
+        System.out.println("\n----->REMOVING ARTICLE<-----");
+        System.out.println("Deleting: " + artSelected);
+        System.out.println(thisDepartment.getTitle() + " has " + thisDepartment.articles.size() + " articles");
+        System.out.println(thisDepartment.getTitle() + " now consists of: ");
+        for(int i = 0; i < thisDepartment.articles.size(); i++) {
+        	System.out.println(thisDepartment.articles.get(i).getTitle());
+        }
+        
     }
 
     /**
      * Article add button clicked.
      */
     //TODO: Add article to the selected department
-    private void artAddButtonClicked() {
+    private void artAddButtonClicked(Department thisDepartment) {
         Article article = new Article(articleInput.getText());
+        //int indexOfDepartment = library.departments.indexOf(thisDepartment);
+        //library.departments.get(indexOfDepartment).addArticle(article);
         articleTable.getItems().add(article);
+        
+        System.out.println("\n----->ADDING NEW ARTICLE<-----");
+        System.out.println("Adding " + articleInput.getText());
+        System.out.println(thisDepartment.getTitle() + " has " + thisDepartment.articles.size() + " articles");
+        System.out.println(thisDepartment.getTitle() + " now consists of: ");
+        for(int i = 0; i < thisDepartment.articles.size(); i++) {
+        	System.out.println(thisDepartment.articles.get(i).getTitle());
+        }
         articleInput.clear();
     }
 
@@ -423,9 +455,19 @@ public class Window extends Application {
         ObservableList<Department> deptSelected, allDepts;
         allDepts = deptTable.getItems(); //Get all the departments
         deptSelected = deptTable.getSelectionModel().getSelectedItems(); //Get the selected
-
-        //Take the selected items and remove them from the whole list
+       
         deptSelected.forEach(allDepts::remove);
+        System.out.println("\n----->DELETING DEPARTMENT<-----");
+        System.out.println("Deleting: " + deptSelected);
+        System.out.println("Current size of library: " + library.departments.size());
+        System.out.println("Library now consists of: ");
+        for(int i = 0; i <= library.departments.size() - 1; i++) {
+        	System.out.println(library.departments.get(i).getTitle());
+        }
+        
+        //Take the selected items and remove them from the whole list
+
+
     }
 
     /**
@@ -433,7 +475,12 @@ public class Window extends Application {
      */
     private void deptAddButtonClicked() {
         Department dept = new Department(deptInput.getText());
+        //adds dept to observable list and auto updates table
         deptTable.getItems().add(dept);
+ 
+        System.out.println("\n----->ADDING NEW DEPARTMENT<-----");
+        System.out.println("Added " + library.departments.get(library.departments.size() - 1).getTitle());
+        System.out.println("Current size of library: " + library.departments.size());
         deptInput.clear();
     }
 
@@ -443,11 +490,19 @@ public class Window extends Application {
      * @return articles
      */
     //TODO: Get the articles from a specific department (add department argument)
-    private ObservableList<Article> getArticles() {
-        ObservableList<Article> articles = FXCollections.observableArrayList();
-        articles.add(new Article("abc"));
-        articles.add(new Article("efg"));
-        return articles;
+    private ObservableList<Article> getArticles(Department thisDepartment) {
+
+        ObservableList<Article> articleList = FXCollections.observableList(thisDepartment.articles);
+        
+        articleList.addListener(new ListChangeListener<Article>() {
+            @Override
+            public void onChanged(ListChangeListener.Change change) {
+              System.out.println("Change in article list");
+            }
+          });
+        
+        
+        return articleList;
     }
 
     /**
@@ -457,11 +512,42 @@ public class Window extends Application {
      */
     //TODO: Get departments from the library (no method argument)
     private ObservableList<Department> getDepartments() {
-        ObservableList<Department> deptList = FXCollections.observableArrayList();
-        deptList.add(new Department("Hr"));
-        deptList.add(new Department("legal"));
+    	
+        ObservableList<Department> deptList = FXCollections.observableList(library.departments);
+        //Listener for department change. Maybe?
+        deptList.addListener(new ListChangeListener<Department>() {
+            @Override
+            public void onChanged(ListChangeListener.Change change) {
+              System.out.println("Change in department list.");
+            }
+          });
+        
         return deptList;
     }
-    
-    //TODO: Add handler for Save and Edit buttons
+    /**
+     * Saves article to chosen department. 
+     *
+     * TODO: Still needs to write out all arrays to file when program is closed.
+     */
+    private void saveButtonClicked(Department thisDepartment, Article thisArticle, String text) {
+    	int departmentIndex;
+    	int articleIndex;
+    	//Copies previous article title and adds new text
+    	Article newArticle = new Article(thisArticle.getTitle(), text);
+    	
+    	if (library.departments.contains(thisDepartment)) {
+    		departmentIndex = library.departments.indexOf(thisDepartment);
+    		articleIndex = library.departments.get(departmentIndex).articles.indexOf(thisArticle);
+    		library.departments.get(departmentIndex).articles.set(articleIndex, newArticle);
+    	}
+    	
+    	/*
+    	 * Console testing
+    	 */
+        System.out.println("\n----->SAVING ARTICLE<-----");
+    	for(int i = 0; i < thisDepartment.articles.size(); i++) {
+    	    System.out.print(thisDepartment.articles.get(i).getTitle() + " : ");
+    	    System.out.println(thisDepartment.articles.get(i).getText());
+    	}
+    }
 }

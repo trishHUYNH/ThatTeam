@@ -14,7 +14,7 @@ public class Department {
     /**
      * articles.
      */
-    private ArrayList<Article> articles;
+    public ArrayList<Article> articles;
 
     /**
      * Constructs a new Department object.
@@ -23,6 +23,7 @@ public class Department {
      */
     public Department(String theTitle) {
         this.title = theTitle;
+        articles = new ArrayList<Article>();
     }
 
     /**
@@ -52,14 +53,12 @@ public class Department {
     public Article getArticle(int index) {
         return articles.get(index);
     }
-
-//    /**
-//     * Edits the article title.
-//     *
-//     * @param newTitle new title
-//     */
-//    public void editArticleTitle(String newTitle) {
-//
-//    }
+    
+    /*
+     * Do this!
+     */
+    public void addArticle(Article newArticle) {
+    	articles.add(newArticle);
+    }
 
 }

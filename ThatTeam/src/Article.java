@@ -42,6 +42,14 @@ public class Article {
         this.title = theTitle;
         this.text = theText;
     }
+    
+    /*
+     * Copy constructor for Article object. Used for saving articles.
+     */
+    public Article(Article copyArticle) {
+    	this.title = copyArticle.title;
+    	this.text = copyArticle.text;
+    }
 
     /**
      * Gets text.
