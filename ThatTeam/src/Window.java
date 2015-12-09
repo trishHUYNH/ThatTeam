@@ -20,6 +20,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.*;
+
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+
 import javafx.application.*;
 import javafx.scene.control.TableColumn.CellEditEvent;
 
@@ -66,6 +71,11 @@ public class Window extends Application {
 	
 	//DanDan
     TextArea articleTextArea;
+    
+    /**
+     * System clipboard for easy copying.
+     */
+    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 
 	public Window() {
 		super();
@@ -407,6 +417,7 @@ public class Window extends Application {
 		GridPane.setConstraints(articleTextArea, 2, 0);
 
 		// Save article button
+		// Author: Trish
 		// TODO: Implement save function
 		Button saveArticle = new Button("Save Article");
         saveArticle.setOnAction(e -> {
@@ -417,13 +428,26 @@ public class Window extends Application {
         		boolean result = ConfirmBox.display("Save Article", "Are you sure you want to save article \""
                  	  			+ articleTable.getSelectionModel().getSelectedItem().getTitle() + "\"?");
     		if (result) 
-    			saveButtonClicked(deptTable.getSelectionModel().getSelectedItem(), articleTable.getSelectionModel().getSelectedItem(), articleTextArea.getText());
+    			saveButtonClicked(deptTable.getSelectionModel().getSelectedItem(), 
+    			                  articleTable.getSelectionModel().getSelectedItem(), articleTextArea.getText());
     		}
 
         });
 
 		saveArticle.setMaxWidth(Double.MAX_VALUE);
 		GridPane.setConstraints(saveArticle, 2, 2);
+		
+		
+		//Copy Article button and functionality
+		//Author: James
+		Button copyButton = new Button("Copy to Clipboard");
+		copyButton.setOnMouseClicked(e -> {
+		    StringSelection sel = new StringSelection(articleTextArea.getText());
+		    clipboard.setContents(sel, sel);
+		});
+		
+		copyButton.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setConstraints(copyButton, 2, 3);
 
 		/**
 		 * PUTTING THE WINDOW TOGETHER
@@ -432,7 +456,7 @@ public class Window extends Application {
 		// Add all of the elements to the grid
 		grid.getChildren().addAll(deptTable, deptInput, addDept, delDept,
 				articleTable, articleInput, addArticle, delArticle,
-				saveArticle, articleTextArea);
+				saveArticle, articleTextArea, copyButton);
 
 		// Create the layout and add the menu and grid
 		mainLayout = new BorderPane();
@@ -562,6 +586,7 @@ public class Window extends Application {
     	
     	if (library.departments.contains(thisDepartment)) {
     		departmentIndex = library.departments.indexOf(thisDepartment);
+    		System.out.println("Dept index: " + departmentIndex);
     		articleIndex = library.departments.get(departmentIndex).articles.indexOf(thisArticle);
     		library.departments.get(departmentIndex).articles.set(articleIndex, newArticle);
     	}
