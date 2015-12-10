@@ -100,8 +100,7 @@ public class Window extends Application {
 		window.setOnCloseRequest(e -> {
 			e.consume();
 
-			boolean answer = ConfirmBox.display("Close Program",
-					"Are you sure you want to close the program?");
+			boolean answer = ConfirmBox.display("Close Program", "Are you sure you want to close the program?");
 			if (answer)
 				window.close();
 		});
@@ -143,8 +142,7 @@ public class Window extends Application {
 
 		MenuItem exit = new MenuItem("Exit");
 		exit.setOnAction(e -> {
-			Boolean answer = ConfirmBox.display("Close Program",
-					"Are you sure you want to close the program?");
+			Boolean answer = ConfirmBox.display("Close Program", "Are you sure you want to close the program?");
 			if (answer)
 				window.close();
 		});
@@ -209,32 +207,26 @@ public class Window extends Application {
 			// Editing a cell changes the title of the department
 			@Override
 			public void handle(CellEditEvent<Department, String> d) {
-				((Department) d.getTableView().getItems()
-						.get(d.getTablePosition().getRow())).setTitle(d
-						.getNewValue());
+				((Department) d.getTableView().getItems().get(d.getTablePosition().getRow())).setTitle(d.getNewValue());
 
 			}
 		});
 
 		// Set the table items here
-//		deptTable.setItems(getDepartments());
+		//deptTable.setItems(getDepartments());
 
 		// switches between the selected departments and displays the list of
-		// articles related ot department
-		deptTable.getSelectionModel().selectedIndexProperty()
-				.addListener(new ChangeListener<Object>() {
+		// articles related to department
+		deptTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Department>() {
 
 					@Override
-					public void changed(
-							@SuppressWarnings("rawtypes") ObservableValue arg0,
-							Object arg1, Object arg2) {
-						// TODO Auto-generated method stub
-						articleTable.getItems().clear(); // clears the current
-															// list
-						articleTable.setItems(getArticles()); // populates the
-																// articleTable
-																// with selected
-																// department
+					public void changed(@SuppressWarnings("rawtypes") ObservableValue obsv, Department oldValue, Department newValue) {
+							//Clears text area when choosing a new dept
+							articleTextArea.setText("Please add or select an article from \"" + newValue.getTitle() + "\"");
+							//Clears current list
+							articleTable.getItems().clear();
+							//Populates articleTable with selected department
+							articleTable.setItems(getArticles());
 					}
 				});
 
@@ -260,8 +252,7 @@ public class Window extends Application {
 
 			// Prompt if name field is empty
 			if (deptInput.getText().isEmpty()) {
-				AlertBox.display("Empty Department Field",
-						"Please enter a department title!");
+				AlertBox.display("Empty Department Field", "Please enter a department title!");
 			} else {
 				
 				deptAddButtonClicked();
@@ -277,14 +268,11 @@ public class Window extends Application {
 		delDept.setOnAction(e -> {
 			// Alert box if no dept is chosen to delete
 			if (deptTable.getSelectionModel().isEmpty()) {
-				AlertBox.display("No Department Chosen",
-						"Please choose a department you would like to delete");
+				AlertBox.display("No Department Chosen", "Please choose a department you would like to delete");
 			} else {
 				// Prompt with department name asking to delete
-				boolean result = ConfirmBox.display("Delete Department",
-						"Are you sure you want to delete \""
-								+ deptTable.getSelectionModel()
-										.getSelectedItem().getTitle() + "\"?");
+				boolean result = ConfirmBox.display("Delete Department", "Are you sure you want to delete \""
+								+ deptTable.getSelectionModel().getSelectedItem().getTitle() + "\"?");
 				if (result)
 					deptDelButtonClicked();
 			}
@@ -303,9 +291,7 @@ public class Window extends Application {
 		TableColumn<Article, String> articleName = new TableColumn<>("Articles");
 
 		// Sets articles to be displayed in the table by their field "title"
-		articleName
-				.setCellValueFactory(new PropertyValueFactory<Article, String>(
-						"title"));
+		articleName.setCellValueFactory(new PropertyValueFactory<Article, String>("title"));
 
 		// Implements Article table cell editing
 		articleName.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -324,15 +310,12 @@ public class Window extends Application {
         });
         
 		// Event handler for editing similar to
-		articleName
-				.setOnEditCommit(new EventHandler<CellEditEvent<Article, String>>() {
+		articleName.setOnEditCommit(new EventHandler<CellEditEvent<Article, String>>() {
 
 					@Override
 					public void handle(CellEditEvent<Article, String> d) {
 
-						((Article) d.getTableView().getItems()
-								.get(d.getTablePosition().getRow())).setTitle(d
-								.getNewValue());
+						((Article) d.getTableView().getItems().get(d.getTablePosition().getRow())).setTitle(d.getNewValue());
 					}
 				});
 
@@ -355,17 +338,14 @@ public class Window extends Application {
 		addArticle
 				.setOnAction(e -> {
 
-					Department curr = deptTable.getSelectionModel()
-							.getSelectedItem();
+					Department curr = deptTable.getSelectionModel().getSelectedItem();
 
 					if (articleInput.getText().isEmpty()) {
-						AlertBox.display("Empty Article Field",
-								"Please enter the name of the article");
+						AlertBox.display("Empty Article Field","Please enter the name of the article");
 					} else if (curr == null) {
-						AlertBox.display("no deparment selcted",
-								"Select a department to add article or add new Department");
+						AlertBox.display("no deparment selcted","Select a department to add article or add new Department");
 					} else {
-							artAddButtonClicked();
+						artAddButtonClicked();
 					}
 				});
 
@@ -375,19 +355,14 @@ public class Window extends Application {
 
 		// Delete Article button
 		Button delArticle = new Button("Delete article");
-		delArticle
-				.setOnAction(e -> {
+		delArticle.setOnAction(e -> {
 					// Alert box if no dept is chosen to delete
 					if (articleTable.getSelectionModel().isEmpty()) {
-						AlertBox.display("No Article Chosen",
-								"Please choose an article you would like to delete");
+						AlertBox.display("No Article Chosen", "Please choose an article you would like to delete");
 					} else {
 						// Prompt with department name asking to delete
-						boolean result = ConfirmBox.display("Delete Article",
-								"Are you sure you want to delete \""
-										+ articleTable.getSelectionModel()
-												.getSelectedItem().getTitle()
-										+ "\"?");
+						boolean result = ConfirmBox.display("Delete Article","Are you sure you want to delete \""
+										+ articleTable.getSelectionModel().getSelectedItem().getTitle()+ "\"?");
 
 						if (result)
 							artDelButtonClicked();
@@ -455,8 +430,8 @@ public class Window extends Application {
 
 		// Add all of the elements to the grid
 		grid.getChildren().addAll(deptTable, deptInput, addDept, delDept,
-				articleTable, articleInput, addArticle, delArticle,
-				saveArticle, articleTextArea, copyButton);
+								articleTable, articleInput, addArticle, delArticle,
+								saveArticle, articleTextArea, copyButton);
 
 		// Create the layout and add the menu and grid
 		mainLayout = new BorderPane();
@@ -487,9 +462,8 @@ public class Window extends Application {
 	// TODO: Delete article(s) from the department
 	private void artDelButtonClicked() {
 
-		Article artSelected = articleTable.getSelectionModel()
-				.getSelectedItem();
-		articleTable.getItems().remove(artSelected);
+		Article artSelected = articleTable.getSelectionModel().getSelectedItem();
+							  articleTable.getItems().remove(artSelected);
 		
 		System.out.println("Article to delete: " + artSelected.toString());
 		Department currDept = deptTable.getSelectionModel().getSelectedItem();
@@ -522,8 +496,7 @@ public class Window extends Application {
 	// TODO: Delete the department(s) from the library
 	private void deptDelButtonClicked() {
 
-		Department deptToDelete = deptTable.getSelectionModel()
-				.getSelectedItem();
+		Department deptToDelete = deptTable.getSelectionModel().getSelectedItem();
 		deptTable.getItems().remove(deptToDelete);
 		System.out.println("Department to delete: " + deptToDelete.toString());
 		library.removeDepartment(deptToDelete);
