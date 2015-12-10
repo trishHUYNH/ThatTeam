@@ -373,27 +373,26 @@ public class Window extends Application {
 		GridPane.setConstraints(delArticle, 1, 4);
 
 		/**
-		 * ARTICLE DISPLAY
+		 * ARTICLE DISPLAY, SAVE, COPY
 		 */
 
 		// Article Text Area
 		// TODO: Change text area in the event of deleting an article being
 		// displayed
-		// TODO: Enable text editing with an "Edit Article" button, and disable
-		// editing when needed
 		// TODO: Set min/max height
 		//TextArea artTextarea = new TextArea();
 		articleTextArea = new TextArea();
 		articleTextArea.setPrefHeight(700);
 		articleTextArea.setMinWidth(300);
-		articleTextArea.setText("Please select an article from a department.");
+		articleTextArea.setPrefWidth(1900);
+		articleTextArea.setText("Please select a department.");
 		articleTextArea.setWrapText(true);
 		articleTextArea.setEditable(true);
 		GridPane.setConstraints(articleTextArea, 2, 0);
 
 		// Save article button
 		// Author: Trish
-		// TODO: Implement save function
+		// TODO: Implement save to file?
 		Button saveArticle = new Button("Save Article");
         saveArticle.setOnAction(e -> {
         	if(articleTable.getSelectionModel().isEmpty()) {
@@ -482,6 +481,9 @@ public class Window extends Application {
 
 		articleTable.getItems().add(article);
 		articleInput.clear();
+		articleTable.getSelectionModel().select(article);                     //J
+		articleTextArea.clear();                                              //J
+		articleTextArea.setPromptText("New article, begin typing");           //J
 
 		System.out.println("department name: " + curr.getTitle().toString());
 		curr.getArticle();
@@ -512,6 +514,7 @@ public class Window extends Application {
 		deptTable.getItems().add(dept);
 		library.addDepartment(dept);
 		deptInput.clear();
+		deptTable.getSelectionModel().select(dept);               //J
 
 	}
 
@@ -555,15 +558,17 @@ public class Window extends Application {
     	int departmentIndex;
     	int articleIndex;
     	//Copies previous article title and adds new text
-    	Article newArticle = new Article(thisArticle.getTitle(), text);
+    	//Article newArticle = new Article(thisArticle.getTitle(), text);
     	
     	if (library.departments.contains(thisDepartment)) {
     		departmentIndex = library.departments.indexOf(thisDepartment);
     		System.out.println("Dept index: " + departmentIndex);
     		articleIndex = library.departments.get(departmentIndex).articles.indexOf(thisArticle);
-    		library.departments.get(departmentIndex).articles.set(articleIndex, newArticle);
+    		library.departments.get(departmentIndex).articles.get(articleIndex).editText(text);
     	}
     	
+//        thisArticle.editText(text);     <--- This works on it's own
+        
     	/*
     	 * Console testing
     	 */
