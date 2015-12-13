@@ -1,34 +1,26 @@
-import java.util.ArrayList;
-
-// TODO: Auto-generated Javadoc
-// TODO: 
 /**
- * The Class Article.
+ * The Article Class
+ * 
+ * @author James Brewer
  */
 public class Article {
 
     /**
-     * title.
+     * Article title.
      */
     private String title;
     
     /**
-     * text.
+     * Article text.
      */
     private String text;
     
-    /**
-     * keywords.
-     */
-    private ArrayList<String> keywords;
-
     /**
      * Constructs a new Article object with only the title.
      *
      * @param theTitle the title
      */
     public Article(String theTitle) {
-        // TODO Auto-generated constructor stub
         this.title = theTitle;
         this.text = "";
     }
@@ -79,18 +71,6 @@ public class Article {
     public void setTitle(String newTitle) {
         this.title = newTitle;
     }
-
-    //TODO: Add/Remove search function in program as extra feature
-    /**
-     * Search text.
-     *
-     * @param theKeyword the keyword
-     * @return true, if successful
-     */
-    public boolean searchText(String theKeyword) {
-        return keywords.contains(theKeyword);
-    }
-
     
     /* (non-Javadoc)
      * @see java.lang.Object#toString()

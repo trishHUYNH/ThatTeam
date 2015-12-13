@@ -1,8 +1,3 @@
-/*
- * TCSS 342 - Spring 2015
- * Assignment
- */
-
 package Test;
 
 import static org.junit.Assert.*;

@@ -33,7 +33,7 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 /**
  * Window class. Creates GUI for the program.
  * 
- * @author Mika Kaur
+ * @author Mika Kaur, James Brewer, Trish Huynh, Daniel Gray
  * @version A
  *
  */
@@ -69,7 +69,9 @@ public class Window extends Application {
 	 */
 	TextField deptInput, articleInput;
 	
-	//DanDan
+	/**
+	 * Text area for displaying the article.
+	 */
     TextArea articleTextArea;
     
     /**
@@ -77,17 +79,26 @@ public class Window extends Application {
      */
     Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 
+	/**
+	 * Constructs a new Window object.
+	 */
 	public Window() {
 		super();
 		library = new Library();
 	}
 
+	/**
+	 * Run window.
+	 */
 	public void runWindow() {
 		launch();
 	}
 
 	/**
 	 * Starts the GUI
+	 * 
+	 * @author Mika Kaur
+	 * Additions written by: Trish Huynh, James Brewer, Daniel Gray
 	 * 
 	 * @see javafx.application.Application#start(javafx.stage.Stage)
 	 */
@@ -113,16 +124,15 @@ public class Window extends Application {
 		 * handlers to each item.
 		 */
 
-		/******* New Menu **********/
+		/**
+		 * MENU BAR
+		 * @author Mika Kaur
+		 * Cleaned by James
+		 */
+		
 		Menu fileMenu = new Menu("File");
-		// Menu newMenu = new Menu("New");
-		// Menu editMenu = new Menu("Edit");
 
 		/******* File menu items **********/
-		// MenuItem newFile = new MenuItem("New...");
-		// newFile.setOnAction(e -> System.out.println("Create a new File"));
-		// fileMenu.getItems().add(newFile);
-		//
 		// MenuItem openFile = new MenuItem("Open...");
 		// openFile.setOnAction(e -> System.out.println("Open a new File"));
 		// fileMenu.getItems().add(openFile);
@@ -132,7 +142,7 @@ public class Window extends Application {
 		// fileMenu.getItems().add(saveFile);
 		//
 		// fileMenu.getItems().add(new SeparatorMenuItem());
-		//
+
 		MenuItem settings = new MenuItem("Settings");
 		settings.setOnAction(e -> System.out
 				.println("Open some setting functions"));
@@ -148,31 +158,8 @@ public class Window extends Application {
 		});
 		fileMenu.getItems().add(exit);
 
-		/******* NewMenu item **********/
-		// MenuItem newDept = new MenuItem("New Department");
-		// newDept.setOnAction(e -> System.out.println("Creates new Dept"));
-		// newMenu.getItems().add(newDept);
-		//
-		// MenuItem newArt = new MenuItem("New Article");
-		// newArt.setOnAction(e -> System.out.println("Creates new Article"));
-		// newMenu.getItems().add(newArt);
-
-		/******* Edit menus **********/
-		// MenuItem dept = new MenuItem("dept");
-		// dept.setOnAction(e -> System.out.println("edit department"));
-		// editMenu.getItems().add(dept);
-		//
-		// MenuItem article = new MenuItem("article");
-		// article.setOnAction(e -> System.out.println("edit article"));
-		// editMenu.getItems().add(article);
-		//
-		// MenuItem text = new MenuItem("text");
-		// text.setOnAction(e -> System.out.println("edit text"));
-		// editMenu.getItems().add(text);
-
 		/******* Main MenuBar **********/
 		MenuBar menubar = new MenuBar();
-		// menubar.getMenus().addAll(fileMenu, newMenu, editMenu);
 		menubar.getMenus().add(fileMenu);
 
 		/**
@@ -186,6 +173,8 @@ public class Window extends Application {
 
 		/**
 		 * DEPARTMENT TABLE VIEW
+		 * @author Mika Kaur
+		 * Changes/additions made by James
 		 */
 
 		deptTable = new TableView<Department>();
@@ -194,8 +183,7 @@ public class Window extends Application {
 		TableColumn<Department, String> deptName = new TableColumn<>(
 				"Departments");
 
-		// Sets the departments to be displayed in the table by their field
-		// "title"
+		// Sets the departments to be displayed in the table by their field "title"
 		deptName.setCellValueFactory(new PropertyValueFactory<>("title"));
 
 		// Implement department table cell editing
@@ -215,8 +203,9 @@ public class Window extends Application {
 		// Set the table items here
 		//deptTable.setItems(getDepartments());
 
-		// switches between the selected departments and displays the list of
-		// articles related to department
+		// Switches between the selected departments and displays the list of
+		// articles related to department.
+		// Author: Mika
 		deptTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Department>() {
 
 					@Override
@@ -239,6 +228,8 @@ public class Window extends Application {
 
 		/**
 		 * DEPARTMENT ADD/DELETE
+		 * @author Mika Kaur
+		 * Updates by James, Trish
 		 */
 
 		// Department name input
@@ -283,6 +274,8 @@ public class Window extends Application {
 
 		/**
 		 * ARTICLE TABLE VIEW
+		 * @author Mika Kaur, Daniel Gray
+		 * Updates by James
 		 */
 
 		articleTable = new TableView<Article>();
@@ -296,16 +289,14 @@ public class Window extends Application {
 		// Implements Article table cell editing
 		articleName.setCellFactory(TextFieldTableCell.forTableColumn());
 
-		//DanDan
         //If one of the articles is clicked, show the article text
+		//Author: Daniel
         articleTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-            	//articleTable = new TableView<Article>();
-                TableView<Article> articleTable = (TableView<Article>) event.getSource();
+                //TableView<Article> articleTable = (TableView<Article>) event.getSource();
                 Article highlightedArticle = articleTable.getSelectionModel().getSelectedItem();
                 articleTextArea.setText(highlightedArticle.getText());
-                //System.out.println("I got it"); 
             }
         });
         
@@ -327,6 +318,7 @@ public class Window extends Application {
 
 		/**
 		 * ARTICLE ADD/DELETE
+		 * @author Mika Kaur, James Brewer
 		 */
 
 		articleInput = new TextField();
@@ -374,6 +366,7 @@ public class Window extends Application {
 
 		/**
 		 * ARTICLE DISPLAY, SAVE, COPY
+		 * @author Mika Kaur, Trish Huynh, James Brewer, Daniel Gray
 		 */
 
 		// Article Text Area
@@ -425,6 +418,8 @@ public class Window extends Application {
 
 		/**
 		 * PUTTING THE WINDOW TOGETHER
+		 * @author Mika Kaur
+		 * Window sizes tweaked by team
 		 */
 
 		// Add all of the elements to the grid
@@ -456,9 +451,8 @@ public class Window extends Application {
 
 	/**
 	 * Delete article button clicked.
+	 * @author Mika Kaur, James Brewer
 	 */
-	// TODO: Decide whether to compress table stuff into one line
-	// TODO: Delete article(s) from the department
 	private void artDelButtonClicked() {
 
 		Article artSelected = articleTable.getSelectionModel().getSelectedItem();
@@ -472,8 +466,8 @@ public class Window extends Application {
 
 	/**
 	 * Article add button clicked.
+	 * @author Mika Kaur, James Brewer
 	 */
-	// TODO: Add article to the selected department
 	private void artAddButtonClicked() {
 
 		Department curr = deptTable.getSelectionModel().getSelectedItem();

@@ -1,7 +1,8 @@
 /**
+ * The starting point of the program
+ * 
  * @author James Brewer
  * @version A
- * 
  */
 public class Main {
 
