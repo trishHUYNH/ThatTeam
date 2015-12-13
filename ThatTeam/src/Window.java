@@ -542,17 +542,17 @@ public class Window extends Application {
 		return artList;
 	}
 
-	/**
-	 * Gets departments.
-	 *
-	 * @return departments
-	 */
-	// TODO: Get departments from the library (no method argument)
-	private ObservableList<Department> getDepartments() {
-		ObservableList<Department> deptList = FXCollections
-				.observableArrayList();
-		return deptList;
-	}
+//	/**
+//	 * Gets departments.
+//	 *
+//	 * @return departments
+//	 */
+//	// TODO: Get departments from the library (no method argument)
+//	private ObservableList<Department> getDepartments() {
+//		ObservableList<Department> deptList = FXCollections
+//				.observableArrayList();
+//		return deptList;
+//	}
 
     private void saveButtonClicked(Department thisDepartment, Article thisArticle, String text) {
     	int departmentIndex;
