@@ -5,12 +5,15 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import Program.Department;
+import Program.Library;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class BackEndTest.
  *
  * @author James Brewer
- * @version 
+ * @version 12_16_2015
  */
 public class BackEndTest {
 
@@ -24,11 +27,26 @@ public class BackEndTest {
     }
 
     /**
-     * Test library.
+     * Test the library class.
      */
     @Test
     public void testLibrary() {
-        fail("Not yet implemented");
+        Library lb = new Library();
+        Department dpt = new Department("Test dept1");
+        Department dpt2 = new Department("Test dept2");
+        
+        lb.addDepartment(dpt);
+        lb.addDepartment(dpt2);
+        
+        assertTrue(dpt.equals(lb.getDepartment(0)));
+        assertTrue(dpt2.equals(lb.getDepartment(1)));
+        
+        assertTrue(lb.getDepartment().size() == 2);
+        
+        lb.removeDepartment(dpt);
+        assertTrue(dpt2.equals(lb.getDepartment(0)));
+        assertTrue(lb.getDepartment().size() == 1);
+        
     }
     
     /**

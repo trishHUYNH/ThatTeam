@@ -1,3 +1,4 @@
+package Program;
 
 
 /**
@@ -75,8 +76,10 @@ public class Article {
         this.title = newTitle;
     }
     
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
+    /**
+     * Give article title for toString
+     * 
+     * @return the article title
      */
     public String toString(){
     	return getTitle();

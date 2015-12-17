@@ -1,3 +1,4 @@
+package Program;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -103,6 +104,15 @@ public class Department {
 		System.out.println("List of articles After deleting: "
 				+ articles.toString());
 
+	}
+	
+	/**
+	 * When called on as a string, return the title
+	 * 
+	 * @return department title
+	 */
+	public String toString() {
+	    return title;
 	}
 
 }
