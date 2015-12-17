@@ -79,21 +79,25 @@ public class BackEndTest {
         testLibrary.departments.get(1).addArticle(articleThree);
         
         //Test getTitle for each department name
-        assertTrue(testLibrary.departments.get(0).getTitle().equals("Test Department 1"));
-        assertTrue(testLibrary.departments.get(1).getTitle().equals("Test Department 2"));
+        assertEquals(testLibrary.departments.get(0).getTitle(), "Test Department 1");
+        assertEquals(testLibrary.departments.get(1).getTitle(), "Test Department 2");
         
-        //Test Department
+        //Test getArticle from Department
         assertEquals(testLibrary.departments.get(0).articles.size(), 2);
-        assertTrue(testLibrary.departments.get(0).getArticle(0).equals(articleOne));
-        assertTrue(testLibrary.departments.get(0).getArticle(1).equals(articleTwo));
-        //Remove articleTwo from deptOne
+        assertEquals(testLibrary.departments.get(0).getArticle(0), articleOne);
+        assertEquals(testLibrary.departments.get(0).getArticle(1), articleTwo);
+        
+        //Test removeArticle from Department
+        //Remove articleOne from deptOne
         testLibrary.departments.get(0).removeArticle(articleOne);
         assertEquals(testLibrary.departments.get(0).articles.size(), 1);
-        assertTrue(testLibrary.departments.get(0).getArticle(0).equals(articleTwo));
+        assertEquals(testLibrary.departments.get(0).getArticle(0), articleTwo);
         
         //Test Department Two
         assertEquals(testLibrary.departments.get(1).articles.size(), 1);
-        assertTrue(testLibrary.departments.get(1).articles.get(0).equals(articleThree));
+        assertEquals(testLibrary.departments.get(1).articles.get(0), articleThree);
+        
+        //Test removeArticle from Department
         //Remove articleThree from deptTwo
         testLibrary.departments.get(1).removeArticle(articleThree);
         assertTrue(testLibrary.departments.get(1).articles.isEmpty());
@@ -102,11 +106,46 @@ public class BackEndTest {
     }
     
     /**
-     * Test article.
+     * Test Article class
+     * Tests for getText, getTitle, editText, and setTitle from Article
+     * 
+     * @author Trish Huynh
      */
     @Test
     public void testArticle() {
+        Library testLibrary = new Library();
+        Department deptOne = new Department("Test Department 1");
+        Department deptTwo = new Department("Test Department 2");
+        Article articleOne = new Article("Article #1", "This is the first article");
+        Article articleTwo = new Article("Article #2", "This is the second article");
+        Article articleThree = new Article("Article #3", "This is the third article");
         
+        testLibrary.addDepartment(deptOne);
+        testLibrary.addDepartment(deptTwo);
+        //Add two articles to deptOne
+        testLibrary.departments.get(0).addArticle(articleOne);
+        testLibrary.departments.get(0).addArticle(articleTwo);
+        //Add one article to deptTwo
+        testLibrary.departments.get(1).addArticle(articleThree);
+        
+        //Test getText from Article
+        assertEquals(testLibrary.departments.get(0).getArticle(0).getText(), "This is the first article");
+        assertEquals(testLibrary.departments.get(0).getArticle(1).getText(), "This is the second article");
+        assertEquals(testLibrary.departments.get(1).getArticle(0).getText(), "This is the third article");
+        
+        //Test getTitle from Article
+        assertEquals(testLibrary.departments.get(0).getArticle(0).getTitle(), "Article #1");
+        assertEquals(testLibrary.departments.get(0).getArticle(1).getTitle(), "Article #2");
+        assertEquals(testLibrary.departments.get(1).getArticle(0).getTitle(), "Article #3");
+        
+        //Test editText from Article
+        testLibrary.departments.get(0).getArticle(0).editText("Changing Article #1 for testing");
+        assertEquals(testLibrary.departments.get(0).getArticle(0).getText(), "Changing Article #1 for testing");
+        
+        //Test setTitle from Article
+        System.out.println("Changing Article #2 to Test Article");
+        testLibrary.departments.get(0).getArticle(1).setTitle("Test Article");
+        assertEquals(testLibrary.departments.get(0).getArticle(1).getTitle(), "Test Article");
     }
 
 }
