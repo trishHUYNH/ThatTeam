@@ -1,5 +1,9 @@
+/**
+ * @author Brandon Thomas
+ * This object handles writing to files and loading data from files. 
+ * 
+ */
 package Program;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -19,6 +23,10 @@ public class ThatFileOperator {
 
 	private static final String DEPARTMENT_HEADER = "DEPARTMENT___BEGIN";
 	private static final String DEPARTMENT_END = "DEPARTMENT___END";
+	
+	private static final String SOURCE_IDENTIFIER = "SOURCE___BEGIN";
+	private static final String SOURCE_END = "SOURCE___END";
+
 
 	/**
 	 * Functions I want to implement
@@ -40,7 +48,13 @@ public class ThatFileOperator {
 	FileWriter fileWriter;
 	
 	private static boolean appendMode = true;
-	
+	/**
+	 * Constructors
+	 * The basic constructor implements a new text file for you 
+	 * whereas the other constructor accepts a file and handles data to and
+	 * from that file.
+	 * 
+	 */
 	public ThatFileOperator(){
 		file = new File("/library.txt");
 		try {
@@ -59,17 +73,32 @@ public class ThatFileOperator {
 		} catch (IOException e1) {
 			System.err.println("Failed to create file properly, derp");
 		}
-		//updateLibraryFromFile(file);
 	}
-	public void addArticle(String article) throws IOException{		
+	/**
+	 * add an article to the text file.
+	 * @param article
+	 * @throws IOException
+	 */
+	public void addArticle(String article, String sourceDepartment) throws IOException{		
 		fileAppender.newLine();
 		fileAppender.write(ARTICLE_HEADER);
+		fileAppender.newLine();
+		fileAppender.write(SOURCE_IDENTIFIER);
+		fileAppender.newLine();
+		fileAppender.write(sourceDepartment);
+		fileAppender.newLine();
+		fileAppender.write(SOURCE_END);
 		fileAppender.newLine();
 		fileAppender.write(article);
 		fileAppender.newLine();
 		fileAppender.write(ARTICLE_END);
 		fileAppender.flush();
 	}
+	/**
+	 * add a category to the text file.
+	 * @param article
+	 * @throws IOException
+	 */
 	public void addCategory(String article) throws IOException{	
 		fileAppender.newLine();
 		fileAppender.write(CATEGORY_HEADER);
@@ -79,6 +108,11 @@ public class ThatFileOperator {
 		fileAppender.write(CATEGORY_END);
 		fileAppender.flush();
 	}
+	/**
+	 * add a department to the text file.
+	 * @param article
+	 * @throws IOException
+	 */
 	public void addDepartment(String article) throws IOException{		
 		fileAppender.newLine();
 		fileAppender.write(DEPARTMENT_HEADER);
@@ -88,6 +122,11 @@ public class ThatFileOperator {
 		fileAppender.write(DEPARTMENT_END);
 		fileAppender.flush();
 	}
+	/**
+	 * Returns a list of type string of every article within the text file.
+	 * @return
+	 * @throws IOException
+	 */
 	public List<String> getArticles() throws IOException{
 		List<String> list = new ArrayList<String>();
 		StringBuilder line = new StringBuilder();
@@ -95,6 +134,10 @@ public class ThatFileOperator {
 		while((test = fileReader.readLine()) != null){
 			if(test.contains(ARTICLE_HEADER)){
 				while(!(test = fileReader.readLine()).contains(ARTICLE_END)){
+					if(test.contains(SOURCE_IDENTIFIER)){
+						test = fileReader.readLine();
+						line.append("Source Department: ");
+					}
 					if(test.contains(ARTICLE_END)) break;
 					line.append(test);
 				}
@@ -106,6 +149,11 @@ public class ThatFileOperator {
 		}
 		return list;
 	}
+	/**
+	 * returns a list of strings which are the departments in the text string.
+	 * @return
+	 * @throws IOException
+	 */
 	public List<String> getDepartments() throws IOException{
 		List<String> list = new ArrayList<String>();
 		StringBuilder line = new StringBuilder();
@@ -124,6 +172,11 @@ public class ThatFileOperator {
 		}
 		return list;
 	}
+	/**
+	 * returns a list of strings which are the categories in the text string.
+	 * @return
+	 * @throws IOException
+	 */
 	public List<String> getCategories() throws IOException{
 		List<String> list = new ArrayList<String>();
 		StringBuilder line = new StringBuilder();
@@ -285,6 +338,10 @@ public class ThatFileOperator {
 			System.err.println("Failed to create file properly, derp");
 		}
 	}
+	/**
+	 * Use this at the end of main to close all file readers, if you want to so; most 
+	 * methods implement this already.
+	 */
 	public void closeFileReader(){
 		try {
 			fileAppender.close();
@@ -293,7 +350,10 @@ public class ThatFileOperator {
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * Feed in a text file and if its properly formatted 
+	 * @param xFiles
+	 */
 	public void updateLibraryFromFile(File xFiles){
 		try{
 			loadArticles(xFiles);
@@ -304,6 +364,11 @@ public class ThatFileOperator {
 		}
 		
 	}
+	/**
+	 * Loading files that are properly formatted to our current file.
+	 * @param xFiles
+	 * @throws IOException
+	 */
 	public void loadArticles(File xFiles) throws IOException{
 		String read = "";
 		StringBuilder line = new StringBuilder("");
@@ -328,6 +393,11 @@ public class ThatFileOperator {
 		fileWriter.close();
 
 	}
+	/**
+	 * Loading files that are properly formatted to our current file.
+	 * @param xFiles
+	 * @throws IOException
+	 */
 	public void loadCategories(File xFiles) throws IOException{
 		String read = "";
 		StringBuilder line = new StringBuilder("");
@@ -351,6 +421,11 @@ public class ThatFileOperator {
 		fileWriter.write(line.toString());
 		fileWriter.close();
 	}
+	/**
+	 * Loading files that are properly formatted to our current file.
+	 * @param xFiles
+	 * @throws IOException
+	 */
 	public void loadDepartments(File xFiles) throws IOException{
 		String read = "";
 		StringBuilder line = new StringBuilder("");
