@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import Program.Article;
 import Program.Department;
 import Program.Library;
 
@@ -55,9 +56,30 @@ public class BackEndTest {
     
     /**
      * Test department.
+     * 
+     * @author Trish Huynh
      */
     @Test
     public void testDepartment() {
+        Library testLibrary = new Library();
+        Department deptOne = new Department("Test Department 1");
+        Department deptTwo = new Department("Test Department 2");
+        Article articleOne = new Article("Article #1", "This is the first article");
+        Article articleTwo = new Article("Article #2", "This is the second article");
+        Article articleThree = new Article("Article #3", "This is the third article");
+        
+        testLibrary.addDepartment(deptOne);
+        testLibrary.addDepartment(deptTwo);
+        testLibrary.departments.get(0).articles.add(articleOne);
+        testLibrary.departments.get(0).articles.add(articleTwo);
+        testLibrary.departments.get(1).articles.add(articleThree);
+        
+        //assertTrue(testLibrary.departments.size() == 2);
+        //assertTrue(testLibrary.departments.get(0).equals(deptOne));
+        //assertTrue(testLibrary.departments.get(1).equals(deptTwo));
+        
+        assertTrue(deptOne.articles.size() == 2);
+        
         
     }
     
