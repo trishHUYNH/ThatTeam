@@ -28,6 +28,10 @@ public class BackEndTest {
 
     /**
      * Test the library class.
+     * 
+     * Adding, retrieving, and removing articles should act as expected.
+     * 
+     * @author James Brewer
      */
     @Test
     public void testLibrary() {
