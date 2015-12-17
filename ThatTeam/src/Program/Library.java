@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 /**
  * Library class. Stores a list of departments, representing the whole library.
  * @Author Mika Kaur, James Brewer
- * @version 12_16_2015
+ * @version 12_17_2015
  */
 public class Library {
 
@@ -27,6 +27,7 @@ public class Library {
 	/**
 	 * Gets a department.
 	 *
+	 * @author James Brewer
 	 * @param index
 	 *            index
 	 * @return department
@@ -38,6 +39,7 @@ public class Library {
 	/**
 	 * Gets the list of all departments.
 	 *
+	 * @author James Brewer
 	 * @return the department
 	 */
 	public List<Department> getDepartment() {
@@ -51,20 +53,20 @@ public class Library {
 	/**
 	 * Adds the department.
 	 *
+	 * @author James Brewer
 	 * @param department
 	 *            department
 	 */
 	public void addDepartment(Department department) {
 
 		departments.add(department);
-		System.out.println("departments size: " + departments.size());
-		System.out.println("List of departments: " + departments.toString());
 
 	}
 	
 	/**
 	 * Removes the department from the list of departments.
 	 *
+	 * @author Mika Kaur
 	 * @param department the department to remove from the list 
 	 */
 	public void removeDepartment(Department department) {
@@ -72,12 +74,9 @@ public class Library {
 		for (int i = 0; i < departments.size(); i++) {
 			if (departments.get(i).equals(department)) {
 				departments.remove(department);
+				break;  //Department found and removed, no need to search further
 			}
 		}
-
-		System.out.println("deleted departments size: " + departments.size());
-		System.out.println("List of departments After deleting: "
-				+ departments.toString());
 
 	}
 

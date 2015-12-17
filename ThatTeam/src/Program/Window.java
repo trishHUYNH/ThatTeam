@@ -35,7 +35,7 @@ import javafx.scene.control.TableColumn.CellEditEvent;
  * Window class. Creates GUI for the program.
  * 
  * @author Mika Kaur, James Brewer, Trish Huynh, Daniel Gray
- * @version 12_16_2015
+ * @version 12_17_2015
  *
  */
 public class Window extends Application {
@@ -85,13 +85,14 @@ public class Window extends Application {
 	 */
 	public Window() {
 		super();
-		library = new Library();
 	}
 
 	/**
 	 * Run window.
 	 */
-	public void runWindow() {
+	public void runWindow(Library newLibrary) {
+	    library = newLibrary;
+	    
 		launch();
 	}
 
@@ -99,7 +100,7 @@ public class Window extends Application {
 	 * Starts the GUI
 	 * 
 	 * @author Mika Kaur
-	 * Additions written by: Trish Huynh, James Brewer, Daniel Gray
+	 * Additions/Changes written by: Trish Huynh, James Brewer, Daniel Gray
 	 * 
 	 * @see javafx.application.Application#start(javafx.stage.Stage)
 	 */
@@ -183,6 +184,8 @@ public class Window extends Application {
 		deptName.setCellFactory(TextFieldTableCell.forTableColumn());
 
 		// The event handler for editing
+		// Author: Mika
+		// Updates by James
 		deptName.setOnEditCommit(new EventHandler<CellEditEvent<Department, String>>() {
 
 			// Editing a cell changes the title of the department
@@ -294,6 +297,8 @@ public class Window extends Application {
         });
         
 		// Event handler for editing similar to
+        // Author: Mika
+        // Updates by James
 		articleName.setOnEditCommit(new EventHandler<CellEditEvent<Article, String>>() {
 
 					@Override
@@ -444,7 +449,7 @@ public class Window extends Application {
 	private void artDelButtonClicked() {
 
 		Article artSelected = articleTable.getSelectionModel().getSelectedItem();
-							  articleTable.getItems().remove(artSelected);
+		articleTable.getItems().remove(artSelected);
 		
 		System.out.println("Article to delete: " + artSelected.toString());
 		Department currDept = deptTable.getSelectionModel().getSelectedItem();
@@ -483,7 +488,7 @@ public class Window extends Application {
 
 		Department deptToDelete = deptTable.getSelectionModel().getSelectedItem();
 		deptTable.getItems().remove(deptToDelete);
-		System.out.println("Department to delete: " + deptToDelete.toString());
+
 		library.removeDepartment(deptToDelete);
 	    articleTextArea.clear();                   //J
 

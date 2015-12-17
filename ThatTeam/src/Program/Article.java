@@ -5,7 +5,7 @@ package Program;
  * The Article Class. Stores an article and it's text.
  * 
  * @author James Brewer
- * @version 12_16_2015
+ * @version 12_17_2015
  */
 public class Article {
 
@@ -22,6 +22,7 @@ public class Article {
     /**
      * Constructs a new Article object with only the title.
      *
+     * @author James Brewer
      * @param theTitle the title
      */
     public Article(String theTitle) {
@@ -32,6 +33,7 @@ public class Article {
     /**
      * Constructs a new Article object with title and text.
      *
+     * @author James Brewer
      * @param theTitle the title
      * @param theText the text
      */
@@ -43,6 +45,7 @@ public class Article {
     /**
      * Gets text.
      *
+     * @author James Brewer
      * @return text
      */
     public String getText() {
@@ -52,6 +55,7 @@ public class Article {
     /**
      * Gets title of an Article.
      *
+     * @author James Brewer
      * @return title
      */
     public String getTitle() {
@@ -61,6 +65,7 @@ public class Article {
     /**
      * Edits the text.
      *
+     * @author James Brewer
      * @param newText new text
      */
     public void editText(String newText) {
@@ -70,6 +75,7 @@ public class Article {
     /**
      * Sets title.
      *
+     * @author James Brewer
      * @param newTitle becomes the new title.
      */
     public void setTitle(String newTitle) {
@@ -79,6 +85,7 @@ public class Article {
     /**
      * Give article title for toString
      * 
+     * @author James Brewer
      * @return the article title
      */
     public String toString(){

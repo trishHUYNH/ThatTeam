@@ -6,23 +6,24 @@ import java.util.stream.Collectors;
 /**
  * Department class. Stores a group of articles under that department.
  * @author Mika Kaur, James Brewer
- * @version 12_16_2015
+ * @version 12_17_2015
  */
 public class Department {
 
 	/**
-	 * title.
+	 * Title of the department.
 	 */
 	private String title;
 
 	/**
-	 * articles.
+	 * List of articles.
 	 */
 	public ArrayList<Article> articles;
 
 	/**
 	 * Constructs a new Department object.
 	 *
+	 * @author James Brewer
 	 * @param theTitle
 	 *            the title
 	 */
@@ -34,6 +35,7 @@ public class Department {
 	/**
 	 * Sets title.
 	 *
+	 * @author James Brewer
 	 * @param newTitle
 	 *            becomes the new title.
 	 */
@@ -43,7 +45,8 @@ public class Department {
 
 	/**
 	 * Gets title.
-	 *
+	 * 
+	 * @author James Brewer
 	 * @return title
 	 */
 	public String getTitle() {
@@ -53,6 +56,7 @@ public class Department {
 	/**
 	 * Gets article.
 	 *
+	 * @author James Brewer
 	 * @param index
 	 *            index
 	 * @return article
@@ -64,6 +68,7 @@ public class Department {
 	/**
 	 * Gets the list of all articles within the department.
 	 *
+	 * @author James Brewer
 	 * @return the article
 	 */
 	public List<Article> getArticle() {
@@ -77,19 +82,20 @@ public class Department {
 	/**
 	 * Adds an article.
 	 *
+	 * @author James Brewer
 	 * @param article
 	 *            the article
 	 */
 	public void addArticle(Article article) {
 
 		articles.add(article);
-		System.out.println("List of articles " + articles.toString());
 
 	}
 	
 	/**
 	 * Removes the article from selected department.
 	 *
+	 * @author Mika Kaur
 	 * @param article the article to remove
 	 */
 	public void removeArticle(Article article) {
@@ -97,12 +103,9 @@ public class Department {
 		for (int i = 0; i < articles.size(); i++) {
 			if (articles.get(i).equals(article)) {
 				articles.remove(article);
+				break;
 			}
 		}
-
-		System.out.println("deleted articles size: " + articles.size());
-		System.out.println("List of articles After deleting: "
-				+ articles.toString());
 
 	}
 	
