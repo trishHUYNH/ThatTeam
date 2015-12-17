@@ -34,7 +34,7 @@ import javafx.scene.control.TableColumn.CellEditEvent;
  * Window class. Creates GUI for the program.
  * 
  * @author Mika Kaur, James Brewer, Trish Huynh, Daniel Gray
- * @version A
+ * @version 12_16_2015
  *
  */
 public class Window extends Application {
@@ -115,14 +115,6 @@ public class Window extends Application {
 			if (answer)
 				window.close();
 		});
-
-		/*
-		 * TODO: Decide on menu bar functionality The menu section of code may
-		 * become unused and will be ignored for now.
-		 * 
-		 * If we decide to use the menu bar and items, we will have to assign
-		 * handlers to each item.
-		 */
 
 		/**
 		 * MENU BAR
@@ -370,9 +362,6 @@ public class Window extends Application {
 		 */
 
 		// Article Text Area
-		// TODO: Change text area in the event of deleting an article being
-		// displayed
-		// TODO: Set min/max height
 		//TextArea artTextarea = new TextArea();
 		articleTextArea = new TextArea();
 		articleTextArea.setPrefHeight(700);
@@ -406,7 +395,7 @@ public class Window extends Application {
 		
 		
 		//Copy Article button and functionality
-		//Author: James
+		/** Author: James **/
 		Button copyButton = new Button("Copy to Clipboard");
 		copyButton.setOnMouseClicked(e -> {
 		    StringSelection sel = new StringSelection(articleTextArea.getText());
@@ -433,11 +422,9 @@ public class Window extends Application {
 		mainLayout.setCenter(grid);
 
 		// Create the scene and add it to the window
-		// TODO: Choose proper default/min/max window size
 		Scene scene = new Scene(mainLayout, 750, 550);
 		window.setScene(scene);
 
-		// TODO: Pick a program title/name
 		window.setTitle("That Team: Language Library");
 		window.setMinWidth(750);
 		window.setMinHeight(550);
@@ -488,19 +475,23 @@ public class Window extends Application {
 
 	/**
 	 * Delete department button clicked.
+	 * @author Mika Kaur
+	 * Updated by James
 	 */
-	// TODO: Delete the department(s) from the library
 	private void deptDelButtonClicked() {
 
 		Department deptToDelete = deptTable.getSelectionModel().getSelectedItem();
 		deptTable.getItems().remove(deptToDelete);
 		System.out.println("Department to delete: " + deptToDelete.toString());
 		library.removeDepartment(deptToDelete);
+	    articleTextArea.clear();                   //J
 
 	}
 
 	/**
 	 * Department add button clicked.
+	 * @author Mika Kaur
+	 * Updated by James
 	 */
 	private void deptAddButtonClicked() {
 
@@ -514,11 +505,11 @@ public class Window extends Application {
 
 	/**
 	 * Gets list of articles for the selected department.
+	 * 
+	 * @author Mika Kaur
 	 *
 	 * @return list of articles for the selected department.
 	 */
-	// TODO: Get the articles from a specific department (add department
-	// argument)
 	private ObservableList<Article> getArticles() {
 		ObservableList<Article> artList = FXCollections.observableArrayList();
 
@@ -529,7 +520,6 @@ public class Window extends Application {
 
 			for (Article art : artList) {
 				articleTable.getItems().add(art);
-				// System.out.println("CHECK: " + art);
 			}
 		}
 
@@ -548,11 +538,20 @@ public class Window extends Application {
 //		return deptList;
 //	}
 
-    private void saveButtonClicked(Department thisDepartment, Article thisArticle, String text) {
+/**
+ * Save button clicked.
+ * 
+ * @author Trish Huynh
+ * Minor update by James
+ *
+ * @param thisDepartment this department
+ * @param thisArticle this article
+ * @param text text
+ */
+private void saveButtonClicked(Department thisDepartment, Article thisArticle, String text) {
     	int departmentIndex;
     	int articleIndex;
     	//Copies previous article title and adds new text
-    	//Article newArticle = new Article(thisArticle.getTitle(), text);
     	
     	if (library.departments.contains(thisDepartment)) {
     		departmentIndex = library.departments.indexOf(thisDepartment);
@@ -560,8 +559,6 @@ public class Window extends Application {
     		articleIndex = library.departments.get(departmentIndex).articles.indexOf(thisArticle);
     		library.departments.get(departmentIndex).articles.get(articleIndex).editText(text);
     	}
-    	
-//        thisArticle.editText(text);     <--- This works on it's own
         
     	/*
     	 * Console testing

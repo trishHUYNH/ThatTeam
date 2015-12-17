@@ -5,14 +5,15 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.*;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class AlertBox.
+ * AlertBox prompt class.
+ * @author Mika Kaur
+ * @version 12_16_2015
  */
 public class AlertBox {
 
     /**
-     * Display.
+     * Display the alert prompt.
      *
      * @param title title
      * @param message message

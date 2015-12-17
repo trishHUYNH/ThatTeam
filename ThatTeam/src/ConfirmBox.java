@@ -7,12 +7,24 @@ import javafx.scene.layout.VBox;
 import javafx.stage.*;
 
 /**
- * The Class ConfirmBox.
+ * ConfirmBox alert class.
+ * @author Mika Kaur
+ * @version 12_16_2015
  */
 public class ConfirmBox {
 
+    /**
+     * User's answer
+     */
     static boolean answer;
 
+    /**
+     * Displays the confirm box prompt.
+     *
+     * @param title title of the prompt
+     * @param message message to the user
+     * @return the user's choice yes/no
+     */
     public static boolean display(String title, String message) {
         Stage window = new Stage();
 

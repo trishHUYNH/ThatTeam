@@ -2,10 +2,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// TODO: Auto-generated Javadoc
-// TODO:  
 /**
- * The Class Department.
+ * Department class. Stores a group of articles under that department.
+ * @author Mika Kaur, James Brewer
+ * @version 12_16_2015
  */
 public class Department {
 
@@ -61,7 +61,7 @@ public class Department {
 	}
 
 	/**
-	 * Gets the list of all article related to particular departments.
+	 * Gets the list of all articles within the department.
 	 *
 	 * @return the article
 	 */
@@ -69,14 +69,12 @@ public class Department {
 		List<Article> list = (ArrayList<Article>) articles.stream().collect(
 				Collectors.toList());
 
-		// list.forEach(System.out::println);
-
 		return list;
 
 	}
 
 	/**
-	 * Adds the article.
+	 * Adds an article.
 	 *
 	 * @param article
 	 *            the article
@@ -106,23 +104,5 @@ public class Department {
 				+ articles.toString());
 
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString() {
-		return getTitle();
-	}
-
-	// /**
-	// * Edits the article title.
-	// *
-	// * @param newTitle new title
-	// */
-	// public void editArticleTitle(String newTitle) {
-	//
-	// }
 
 }

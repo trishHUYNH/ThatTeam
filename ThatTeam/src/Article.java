@@ -1,7 +1,10 @@
+
+
 /**
- * The Article Class
+ * The Article Class. Stores an article and it's text.
  * 
  * @author James Brewer
+ * @version 12_16_2015
  */
 public class Article {
 

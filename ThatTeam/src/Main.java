@@ -2,7 +2,7 @@
  * The starting point of the program
  * 
  * @author James Brewer
- * @version A
+ * @version 12_12_2015
  */
 public class Main {
 

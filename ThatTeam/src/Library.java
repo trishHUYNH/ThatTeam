@@ -2,14 +2,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class Library.
+ * Library class. Stores a list of departments, representing the whole library.
+ * @Author Mika Kaur, James Brewer
+ * @version 12_16_2015
  */
 public class Library {
 
 	/**
-	 * departments.
+	 * Collection of department
 	 */
 	public ArrayList<Department> departments;
 
@@ -23,7 +24,7 @@ public class Library {
 	// TODO: Add a constructor for an existing list?
 
 	/**
-	 * Gets department.
+	 * Gets a department.
 	 *
 	 * @param index
 	 *            index
@@ -34,15 +35,13 @@ public class Library {
 	}
 
 	/**
-	 * Gets the list of all department.
+	 * Gets the list of all departments.
 	 *
 	 * @return the department
 	 */
 	public List<Department> getDepartment() {
 		List<Department> list = (ArrayList<Department>) departments.stream()
 				.collect(Collectors.toList());
-
-		// list.forEach(System.out::println);
 
 		return list;
 
@@ -79,19 +78,6 @@ public class Library {
 		System.out.println("List of departments After deleting: "
 				+ departments.toString());
 
-	}
-	
-
-	/**
-	 * Edits the department.
-	 *
-	 * @param index
-	 *            index
-	 * @param newTitle
-	 *            new title
-	 */
-	public void editDepartment(int index, String newTitle) {
-		departments.get(index).setTitle(newTitle);
 	}
 
 }
