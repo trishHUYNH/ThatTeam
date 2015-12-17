@@ -55,7 +55,9 @@ public class BackEndTest {
     }
     
     /**
-     * Test department.
+     * Test Department class.
+     * 
+     * Tests for getTitle, addArticle, getArticle, and removeArticle
      * 
      * @author Trish Huynh
      */
@@ -70,15 +72,31 @@ public class BackEndTest {
         
         testLibrary.addDepartment(deptOne);
         testLibrary.addDepartment(deptTwo);
-        testLibrary.departments.get(0).articles.add(articleOne);
-        testLibrary.departments.get(0).articles.add(articleTwo);
-        testLibrary.departments.get(1).articles.add(articleThree);
+        //Add two articles to deptOne
+        testLibrary.departments.get(0).addArticle(articleOne);
+        testLibrary.departments.get(0).addArticle(articleTwo);
+        //Add one article to deptTwo
+        testLibrary.departments.get(1).addArticle(articleThree);
         
-        //assertTrue(testLibrary.departments.size() == 2);
-        //assertTrue(testLibrary.departments.get(0).equals(deptOne));
-        //assertTrue(testLibrary.departments.get(1).equals(deptTwo));
+        //Test getTitle for each department name
+        assertTrue(testLibrary.departments.get(0).getTitle().equals("Test Department 1"));
+        assertTrue(testLibrary.departments.get(1).getTitle().equals("Test Department 2"));
         
-        assertTrue(deptOne.articles.size() == 2);
+        //Test Department
+        assertEquals(testLibrary.departments.get(0).articles.size(), 2);
+        assertTrue(testLibrary.departments.get(0).getArticle(0).equals(articleOne));
+        assertTrue(testLibrary.departments.get(0).getArticle(1).equals(articleTwo));
+        //Remove articleTwo from deptOne
+        testLibrary.departments.get(0).removeArticle(articleOne);
+        assertEquals(testLibrary.departments.get(0).articles.size(), 1);
+        assertTrue(testLibrary.departments.get(0).getArticle(0).equals(articleTwo));
+        
+        //Test Department Two
+        assertEquals(testLibrary.departments.get(1).articles.size(), 1);
+        assertTrue(testLibrary.departments.get(1).articles.get(0).equals(articleThree));
+        //Remove articleThree from deptTwo
+        testLibrary.departments.get(1).removeArticle(articleThree);
+        assertTrue(testLibrary.departments.get(1).articles.isEmpty());
         
         
     }
