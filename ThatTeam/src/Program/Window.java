@@ -125,6 +125,7 @@ public class Window extends Application {
 
             boolean answer = ConfirmBox.display("Close Program", "Are you sure you want to close the program?");
             if (answer)
+                saveLibraryToFile();
                 window.close();
         });
 
@@ -624,15 +625,7 @@ public class Window extends Application {
                 articleIndex = library.departments.get(departmentIndex).articles.indexOf(thisArticle);
                 library.departments.get(departmentIndex).articles.get(articleIndex).editText(text);
             }
-            
-            /*
-             * Console testing
-             */
-            System.out.println("\n----->SAVING ARTICLE<-----");
-            for(int i = 0; i < thisDepartment.articles.size(); i++) {
-                System.out.print(thisDepartment.articles.get(i).getTitle() + " : ");
-                System.out.println(thisDepartment.articles.get(i).getText());
-            }
+
     }
 
     /**
