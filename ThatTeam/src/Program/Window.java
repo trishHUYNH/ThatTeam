@@ -236,7 +236,7 @@ public class Window extends Application {
         /**
          * DEPARTMENT ADD/DELETE
          * @author Mika Kaur
-         * Updates by James, Trish
+         * Updates by James, Trish, Daniel
          */
 
         // Department name input
@@ -247,13 +247,28 @@ public class Window extends Application {
         // Add Department Button
         Button addDept = new Button("Add Dept");
         addDept.setOnAction(e -> {
-
+            String newDepartmentTitle = deptInput.getText();
+            boolean unique = true;
             // Prompt if name field is empty
-            if (deptInput.getText().isEmpty()) {
+            if (newDepartmentTitle.isEmpty()) {
                 AlertBox.display("Empty Department Field", "Please enter a department title!");
-            } else {
+            }
+            
+            else {
+                //Check that the department does not already exist
+                ObservableList<Department> DList = deptTable.getItems();
+                for (Department D : DList){
+                    if (D.getTitle().equals(newDepartmentTitle)){
+                        unique = false;
+                    }
+                }
                 
-                deptAddButtonClicked();
+                if (unique == true){
+                    deptAddButtonClicked();
+                }
+                else{
+                    AlertBox.display("This Department Already Exists!", "Please choose a different title or use the existing department.");
+                }   
             }
         });
 
@@ -330,6 +345,7 @@ public class Window extends Application {
         /**
          * ARTICLE ADD/DELETE
          * @author Mika Kaur, James Brewer
+         * Updates by Daniel
          */
 
         articleInput = new TextField();
@@ -337,20 +353,36 @@ public class Window extends Application {
         GridPane.setConstraints(articleInput, 1, 2);
 
         // Add Article Button
-        Button addArticle = new Button("Add article");
-        addArticle
-                .setOnAction(e -> {
+        // Author: Mika
+        // Updated by Daniel
+        Button addArticle = new Button("Add Article");
+        addArticle.setOnAction(e -> {
 
-                    Department curr = deptTable.getSelectionModel().getSelectedItem();
-
-                    if (articleInput.getText().isEmpty()) {
-                        AlertBox.display("Empty Article Field","Please enter the name of the article");
-                    } else if (curr == null) {
-                        AlertBox.display("no deparment selcted","Select a department to add article or add new Department");
-                    } else {
-                        artAddButtonClicked();
+            Department curr = deptTable.getSelectionModel().getSelectedItem();
+            String newArticleTitle = articleInput.getText();
+            boolean unique = true;
+            
+            if (newArticleTitle.isEmpty()) {
+                AlertBox.display("Empty Article Field","Please enter the name of the article");
+            } else if (curr == null) {
+                AlertBox.display("No deparment selected","Select a department to add article or add new Department");
+            } else {        
+                //Check that the article does not already exist
+                ObservableList<Article> AList = articleTable.getItems();
+                for (Article A : AList){
+                    if (A.getTitle().equals(newArticleTitle)){
+                        unique = false;
                     }
-                });
+                }
+                
+                if (unique == true){
+                    artAddButtonClicked();
+                }
+                else{
+                    AlertBox.display("This Article Already Exists!", "Please choose a different title or alter the existing article.");
+                }   
+            }
+        });
 
         // Set button width to match the column width
         addArticle.setMaxWidth(Double.MAX_VALUE);
