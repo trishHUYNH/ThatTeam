@@ -2,12 +2,20 @@ package Test;
 
 import static org.junit.Assert.*;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import Program.Article;
 import Program.Department;
 import Program.Library;
+import Program.ThatFileOperator;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -147,5 +155,70 @@ public class BackEndTest {
         testLibrary.departments.get(0).getArticle(1).setTitle("Test Article");
         assertEquals(testLibrary.departments.get(0).getArticle(1).getTitle(), "Test Article");
     }
+    /**
+     * Test ThatFileOperator class
+     * Tests for reading from and writing to file
+     * 
+     * @author Daniel Gray
+     */
+    @Test
+    public void testFileIO(){
+    	ThatFileOperator TFOIN = new ThatFileOperator(new File("library.txt"));
+    	ThatFileOperator TFOOUT = new ThatFileOperator(new File("libraryTest.txt"));
+    	
+    	List<Department> deps = new ArrayList<Department>();
+    	
+    	try {
+			 deps = TFOIN.getDepartments();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	Library library = new Library();
+    	library.departments.addAll(deps);
+    	
+    	try {
+			TFOOUT.rewriteFile(library);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	String input = null;
+    	String output = null;
+    	
+    	try {
+			input = readFile("library.txt");
+			output = readFile("libraryTest.txt");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	if (input != null && output != null){
+    		assertEquals(input, output);
+    	}
+    	else{
+    		fail("Files did not read!");
+    	}    	
+    }
+    
+    
+    //Complements of StackOverflow
+    private String readFile( String file ) throws IOException {
+        BufferedReader reader = new BufferedReader( new FileReader (file));
+        String         line = null;
+        StringBuilder  stringBuilder = new StringBuilder();
+        String         ls = System.getProperty("line.separator");
+
+        while( ( line = reader.readLine() ) != null ) {
+            stringBuilder.append( line );
+            stringBuilder.append( ls );
+        }
+
+        return stringBuilder.toString();
+    }
+    
 
 }
