@@ -1,8 +1,6 @@
+
 DEPARTMENT___BEGIN
 Human Resources
-DEPARTMENT___END
-DEPARTMENT___BEGIN
-New Department2
 DEPARTMENT___END
 ARTICLE___BEGIN
 ARTICLE___TITLE___BEGIN
@@ -14,6 +12,7 @@ SOURCE___END
 text
 
 text text
+
 ARTICLE___END
 ARTICLE___BEGIN
 ARTICLE___TITLE___BEGIN
@@ -28,4 +27,20 @@ Test
 2
 3
 4
+
+ARTICLE___END
+DEPARTMENT___BEGIN
+Legal
+DEPARTMENT___END
+ARTICLE___BEGIN
+ARTICLE___TITLE___BEGIN
+Legal Letter Header
+ARTICLE___TITLE___END
+SOURCE___BEGIN
+Legal
+SOURCE___END
+(Placeholder for header text and legal jargon)
+
+(12-17)
+
 ARTICLE___END

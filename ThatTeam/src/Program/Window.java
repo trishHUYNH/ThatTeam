@@ -158,6 +158,7 @@ public class Window extends Application {
         exit.setOnAction(e -> {
             Boolean answer = ConfirmBox.display("Close Program", "Are you sure you want to close the program?");
             if (answer)
+                saveLibraryToFile();
                 window.close();
         });
         fileMenu.getItems().add(exit);
@@ -602,37 +603,49 @@ public class Window extends Application {
         return deptList;
     }
 
-/**
- * Save button clicked.
- * 
- * @author Trish Huynh
- * Minor update by James
- *
- * @param thisDepartment this department
- * @param thisArticle this article
- * @param text text
- */
-private void saveButtonClicked(Department thisDepartment, Article thisArticle, String text) {
-        int departmentIndex;
-        int articleIndex;
-        //Copies previous article title and adds new text
-        
-        if (library.departments.contains(thisDepartment)) {
-            departmentIndex = library.departments.indexOf(thisDepartment);
-            System.out.println("Dept index: " + departmentIndex);
-            articleIndex = library.departments.get(departmentIndex).articles.indexOf(thisArticle);
-            library.departments.get(departmentIndex).articles.get(articleIndex).editText(text);
-        }
-        
-        /*
-         * Console testing
-         */
-        System.out.println("\n----->SAVING ARTICLE<-----");
-        for(int i = 0; i < thisDepartment.articles.size(); i++) {
-            System.out.print(thisDepartment.articles.get(i).getTitle() + " : ");
-            System.out.println(thisDepartment.articles.get(i).getText());
+    /**
+     * Save button clicked.
+     * 
+     * @author Trish Huynh
+     * Minor update by James
+     *
+     * @param thisDepartment this department
+     * @param thisArticle this article
+     * @param text text
+     */
+    private void saveButtonClicked(Department thisDepartment, Article thisArticle, String text) {
+            int departmentIndex;
+            int articleIndex;
+            //Copies previous article title and adds new text
+            
+            if (library.departments.contains(thisDepartment)) {
+                departmentIndex = library.departments.indexOf(thisDepartment);
+                System.out.println("Dept index: " + departmentIndex);
+                articleIndex = library.departments.get(departmentIndex).articles.indexOf(thisArticle);
+                library.departments.get(departmentIndex).articles.get(articleIndex).editText(text);
+            }
+            
+            /*
+             * Console testing
+             */
+            System.out.println("\n----->SAVING ARTICLE<-----");
+            for(int i = 0; i < thisDepartment.articles.size(); i++) {
+                System.out.print(thisDepartment.articles.get(i).getTitle() + " : ");
+                System.out.println(thisDepartment.articles.get(i).getText());
+            }
+    }
+
+    /**
+     * Saves the current state of the library to the file
+     */
+    private void saveLibraryToFile() {
+        try {
+            TFO.rewriteFile(library);
+        } catch (IOException e) {
+            System.err.println("Error rewriting file");
         }
     }
 
-
 }
+
+

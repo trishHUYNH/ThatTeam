@@ -16,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,8 +80,12 @@ public class ThatFileOperator {
             System.err.println("Failed to create file properly, derp");
         }
     }
+    
     /**
      * add an article to the text file.
+     * 
+     * @author Brandon Thomas
+     * Modified by James for multi-line text
      * @param article
      * @throws IOException
      */
@@ -186,21 +191,24 @@ public class ThatFileOperator {
         while((test = fileReader.readLine()) != null){
             if(test.contains(ARTICLE_HEADER)){
                 while(!(test = fileReader.readLine()).contains(ARTICLE_END)){
-                    if(test.contains(ARTICLE_END)) break;
                     if(test.contains(TITLE_BEGIN)) {
                         while(!(test = fileReader.readLine()).contains(TITLE_END)){
-                            if(test.contains(TITLE_END)) break;
                             tempArt = new Article(test);
                         }
                     } else if(test.contains(SOURCE_IDENTIFIER)) {
                         while(!(test = fileReader.readLine()).contains(SOURCE_END)){
-                            if(test.contains(SOURCE_END)) break;
                             deptName = test;
                         }
-                    } else {                        
-                        line.append(test + "\n");
+                    } else {
+                        if(test.equals("")) {
+                            line.append("\n");
+                        }else if(!test.equals("")){
+                            line.append(test + "\n");
+                        }
                     }
                 }
+                
+                line.deleteCharAt(line.length() - 1); //Remove the last new line character
                 
                 tempArt.editText(line.toString());
                 for(Department dept:deptList) {
@@ -397,5 +405,29 @@ public class ThatFileOperator {
         fileWriter.write(line.toString());
         fileWriter.close();
 
+    }
+    
+    /**
+     * Resets the file given a library object
+     * 
+     * @author James Brewer
+     * @param current library
+     */
+    public void rewriteFile(Library lib) throws IOException{
+        PrintWriter pw = new PrintWriter(file);
+        pw.close();         //Effectively clears the file
+        
+        List<Department> deptList = lib.getDepartment();
+        String deptTitle = "";
+        for(Department dept:deptList) {
+            deptTitle = dept.getTitle();
+            addDepartment(deptTitle);
+            
+            for(Article art:dept.getArticle()) {
+                addArticle(art.getText(), deptTitle, art.getTitle());
+            }
+            
+        }
+        
     }
 }
