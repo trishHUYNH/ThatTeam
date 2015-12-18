@@ -46,11 +46,11 @@ public class BackEndTest {
         assertTrue(dpt.equals(lb.getDepartment(0)));
         assertTrue(dpt2.equals(lb.getDepartment(1)));
         
-        assertTrue(lb.getDepartment().size() == 2);
+        assertTrue(lb.departments.size() == 2);
         
         lb.removeDepartment(dpt);
         assertTrue(dpt2.equals(lb.getDepartment(0)));
-        assertTrue(lb.getDepartment().size() == 1);
+        assertTrue(lb.departments.size() == 1);
         
     }
     

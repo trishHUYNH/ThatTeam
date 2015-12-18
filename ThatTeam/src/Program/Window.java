@@ -25,6 +25,9 @@ import javafx.stage.*;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 import javafx.application.*;
 import javafx.scene.control.TableColumn.CellEditEvent;
@@ -79,20 +82,27 @@ public class Window extends Application {
      * System clipboard for easy copying.
      */
     Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+    
+    
+    /**
+     * Necessary file reading operator. Better to keep it separated.
+     */
+    ThatFileOperator TFO = new ThatFileOperator(new File("library.txt"));
 
 	/**
 	 * Constructs a new Window object.
 	 */
 	public Window() {
 		super();
+		
+		library = new Library();
 	}
 
 	/**
 	 * Run window.
 	 */
-	public void runWindow(Library newLibrary) {
-	    library = newLibrary;
-	    
+	public void runWindow() {
+
 		launch();
 	}
 
@@ -220,6 +230,7 @@ public class Window extends Application {
 		deptTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		deptTable.setMinWidth(200); // Keeps table from compressing
 		deptTable.getColumns().add(deptName);
+		deptTable.setItems(accessLibraryFile());
 		GridPane.setConstraints(deptTable, 0, 0);
 
 		/**
@@ -292,7 +303,9 @@ public class Window extends Application {
             public void handle(MouseEvent event) {
                 //TableView<Article> articleTable = (TableView<Article>) event.getSource();
                 Article highlightedArticle = articleTable.getSelectionModel().getSelectedItem();
-                articleTextArea.setText(highlightedArticle.getText());
+                if(highlightedArticle != null){
+                    articleTextArea.setText(highlightedArticle.getText());
+                }
             }
         });
         
@@ -468,9 +481,9 @@ public class Window extends Application {
 
 		articleTable.getItems().add(article);
 		articleInput.clear();
-		articleTable.getSelectionModel().select(article);                     //J
-		articleTextArea.clear();                                              //J
-		articleTextArea.setPromptText("New article, begin typing");           //J
+		articleTable.getSelectionModel().select(article);                     
+		articleTextArea.clear();                                              
+		articleTextArea.setPromptText("New article, begin typing");           
 
 		System.out.println("department name: " + curr.getTitle().toString());
 		curr.getArticle();
@@ -490,7 +503,7 @@ public class Window extends Application {
 		deptTable.getItems().remove(deptToDelete);
 
 		library.removeDepartment(deptToDelete);
-	    articleTextArea.clear();                   //J
+	    articleTextArea.clear();                   
 
 	}
 
@@ -505,7 +518,7 @@ public class Window extends Application {
 		deptTable.getItems().add(dept);
 		library.addDepartment(dept);
 		deptInput.clear();
-		deptTable.getSelectionModel().select(dept);               //J
+		deptTable.getSelectionModel().select(dept);               
 
 	}
 
@@ -520,7 +533,7 @@ public class Window extends Application {
 		ObservableList<Article> artList = FXCollections.observableArrayList();
 
 		Department curr = deptTable.getSelectionModel().getSelectedItem();
-
+		
 		if (curr != null) {
 			artList.addAll(curr.getArticle());
 
@@ -532,17 +545,30 @@ public class Window extends Application {
 		return artList;
 	}
 
-//	/**
-//	 * Gets departments.
-//	 *
-//	 * @return departments
-//	 */
-//	// TODO: Get departments from the library (no method argument)
-//	private ObservableList<Department> getDepartments() {
-//		ObservableList<Department> deptList = FXCollections
-//				.observableArrayList();
-//		return deptList;
-//	}
+	/**
+	 * Gets departments.
+	 *
+	 * @author Mika Kaur, James Brewer
+	 * @return departments
+	 */
+	// TODO: Get departments from the library (no method argument)
+	private ObservableList<Department> accessLibraryFile() {
+		ObservableList<Department> deptList = FXCollections
+				.observableArrayList();
+		
+        try {
+            List<Department> fileDepts = TFO.getDepartments();
+            for(Department dept:fileDepts) {
+                library.addDepartment(dept);
+            }
+        } catch (IOException e){
+            System.err.println("Error reading departments");
+        }
+		
+		deptList.addAll(library.departments);
+	    
+		return deptList;
+	}
 
 /**
  * Save button clicked.

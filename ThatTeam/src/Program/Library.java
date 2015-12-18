@@ -33,13 +33,14 @@ public class Library {
 	 * @return department
 	 */
 	public Department getDepartment(int index) {
+	    System.out.println(departments.get(index).getTitle());
 		return departments.get(index);
 	}
 
 	/**
 	 * Gets the list of all departments.
 	 *
-	 * @author James Brewer
+	 * @author Mika Kaur
 	 * @return the department
 	 */
 	public List<Department> getDepartment() {
@@ -60,6 +61,7 @@ public class Library {
 	public void addDepartment(Department department) {
 
 		departments.add(department);
+//		System.out.println(department.getTitle());
 
 	}
 	
