@@ -216,6 +216,8 @@ public class BackEndTest {
             stringBuilder.append( line );
             stringBuilder.append( ls );
         }
+        
+        reader.close();
 
         return stringBuilder.toString();
     }
